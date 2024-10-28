@@ -86,6 +86,71 @@ const routes: Routes = [
 					import('./pages/user/profile/profile.module').then(
 						(m) => m.ProfileModule
 					)
+			},
+			{
+				path: 'school',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'School'
+					}
+				},
+				loadChildren: () =>
+					import('./modules/school/pages/school/school.module').then(
+						(m) => m.SchoolModule
+					)
+			},
+			{
+				path: 'courses',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Courses'
+					}
+				},
+				loadChildren: () =>
+					import('./modules/course/pages/courses/courses.module').then(
+						(m) => m.CoursesModule
+					)
+			},
+			{
+				path: 'lessons',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Lessons'
+					}
+				},
+				loadChildren: () =>
+					import('./modules/lesson/pages/lessons/lessons.module').then(
+						(m) => m.LessonsModule
+					)
+			},
+			{
+				path: 'tests',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Tests'
+					}
+				},
+				loadChildren: () =>
+					import('./modules/test/pages/tests/tests.module').then(
+						(m) => m.TestsModule
+					)
+			},
+			{
+				path: 'certificates',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Certificates'
+					}
+				},
+				loadChildren: () =>
+					import('./modules/certificate/pages/certificates/certificates.module').then(
+						(m) => m.CertificatesModule
+					)
 			}
 		]
 	},
