@@ -1,20 +1,20 @@
 import { Component } from "@angular/core";
 import { AlertService, CoreService } from "wacom";
-import { TestService, Test } from "../../services/test.service";
+import { SchoollessonService, Schoollesson } from "../../services/schoollesson.service";
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
 
 @Component({
-  templateUrl: "./tests.component.html",
-  styleUrls: ["./tests.component.scss"],
+  templateUrl: "./lessons.component.html",
+  styleUrls: ["./lessons.component.scss"],
 })
-export class TestsComponent {
+export class LessonsComponent {
   columns = ["name", "description"];
 
-  form: FormInterface = this._form.getForm("tests", {
-    formId: "tests",
-    title: "Tests",
+  form: FormInterface = this._form.getForm("lessons", {
+    formId: "lessons",
+    title: "Lessons",
     components: [
       {
         name: "Text",
@@ -23,7 +23,7 @@ export class TestsComponent {
         fields: [
           {
             name: "Placeholder",
-            value: "fill tests title",
+            value: "fill lessons title",
           },
           {
             name: "Label",
@@ -37,7 +37,7 @@ export class TestsComponent {
         fields: [
           {
             name: "Placeholder",
-            value: "fill tests description",
+            value: "fill lessons description",
           },
           {
             name: "Label",
@@ -50,26 +50,26 @@ export class TestsComponent {
 
   config = {
     create: () => {
-      this._form.modal<Test>(this.form, {
+      this._form.modal<Schoollesson>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
-          this._st.create(created as Test);
+          this._ss.create(created as Schoollesson);
           close();
         },
       });
     },
-    update: (doc: Test) => {
+    update: (doc: Schoollesson) => {
       this._form
-        .modal<Test>(this.form, [], doc)
-        .then((updated: Test) => {
+        .modal<Schoollesson>(this.form, [], doc)
+        .then((updated: Schoollesson) => {
           this._core.copy(updated, doc);
-          this._st.update(doc);
+          this._ss.update(doc);
         });
     },
-    delete: (doc: Test) => {
+    delete: (doc: Schoollesson) => {
       this._alert.question({
         text: this._translate.translate(
-          "Common.Are you sure you want to delete this Test?"
+          "Common.Are you sure you want to delete this Schoollesson?"
         ),
         buttons: [
           {
@@ -78,7 +78,7 @@ export class TestsComponent {
           {
             text: this._translate.translate("Common.Yes"),
             callback: () => {
-              this._st.delete(doc);
+              this._ss.delete(doc);
             },
           },
         ],
@@ -87,21 +87,21 @@ export class TestsComponent {
     buttons: [
       {
         icon: "cloud_download",
-        click: (doc: Test) => {
-          this._form.modalUnique<Test>("tests", "url", doc);
+        click: (doc: Schoollesson) => {
+          this._form.modalUnique<Schoollesson>("lessons", "url", doc);
         },
       },
     ],
   };
 
-  get rows(): Test[] {
-    return this._st.tests;
+  get rows(): Schoollesson[] {
+    return this._ss.schoollessons;
   }
 
   constructor(
     private _translate: TranslateService,
     private _alert: AlertService,
-    private _st: TestService,
+    private _ss: SchoollessonService,
     private _form: FormService,
     private _core: CoreService
   ) {}

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AlertService, CoreService } from "wacom";
-import { CertificateService, Certificate } from "../../services/certificate.service";
+import { SchoolcertificateService, Schoolcertificate } from "../../services/schoolcertificate.service";
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
@@ -50,26 +50,26 @@ export class CertificatesComponent {
 
   config = {
     create: () => {
-      this._form.modal<Certificate>(this.form, {
+      this._form.modal<Schoolcertificate>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
-          this._sc.create(created as Certificate);
+          this._ss.create(created as Schoolcertificate);
           close();
         },
       });
     },
-    update: (doc: Certificate) => {
+    update: (doc: Schoolcertificate) => {
       this._form
-        .modal<Certificate>(this.form, [], doc)
-        .then((updated: Certificate) => {
+        .modal<Schoolcertificate>(this.form, [], doc)
+        .then((updated: Schoolcertificate) => {
           this._core.copy(updated, doc);
-          this._sc.update(doc);
+          this._ss.update(doc);
         });
     },
-    delete: (doc: Certificate) => {
+    delete: (doc: Schoolcertificate) => {
       this._alert.question({
         text: this._translate.translate(
-          "Common.Are you sure you want to delete this Certificate?"
+          "Common.Are you sure you want to delete this Schoolcertificate?"
         ),
         buttons: [
           {
@@ -78,7 +78,7 @@ export class CertificatesComponent {
           {
             text: this._translate.translate("Common.Yes"),
             callback: () => {
-              this._sc.delete(doc);
+              this._ss.delete(doc);
             },
           },
         ],
@@ -87,21 +87,21 @@ export class CertificatesComponent {
     buttons: [
       {
         icon: "cloud_download",
-        click: (doc: Certificate) => {
-          this._form.modalUnique<Certificate>("certificates", "url", doc);
+        click: (doc: Schoolcertificate) => {
+          this._form.modalUnique<Schoolcertificate>("certificates", "url", doc);
         },
       },
     ],
   };
 
-  get rows(): Certificate[] {
-    return this._sc.certificates;
+  get rows(): Schoolcertificate[] {
+    return this._ss.schoolcertificates;
   }
 
   constructor(
     private _translate: TranslateService,
     private _alert: AlertService,
-    private _sc: CertificateService,
+    private _ss: SchoolcertificateService,
     private _form: FormService,
     private _core: CoreService
   ) {}

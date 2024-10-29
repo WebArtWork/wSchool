@@ -109,7 +109,7 @@ const routes: Routes = [
 					}
 				},
 				loadChildren: () =>
-					import('./modules/course/pages/courses/courses.module').then(
+					import('./modules/schoolcourse/pages/courses/courses.module').then(
 						(m) => m.CoursesModule
 					)
 			},
@@ -122,7 +122,7 @@ const routes: Routes = [
 					}
 				},
 				loadChildren: () =>
-					import('./modules/lesson/pages/lessons/lessons.module').then(
+					import('./modules/schoollesson/pages/lessons/lessons.module').then(
 						(m) => m.LessonsModule
 					)
 			},
@@ -135,7 +135,7 @@ const routes: Routes = [
 					}
 				},
 				loadChildren: () =>
-					import('./modules/test/pages/tests/tests.module').then(
+					import('./modules/schooltest/pages/tests/tests.module').then(
 						(m) => m.TestsModule
 					)
 			},
@@ -148,7 +148,7 @@ const routes: Routes = [
 					}
 				},
 				loadChildren: () =>
-					import('./modules/certificate/pages/certificates/certificates.module').then(
+					import('./modules/schoolcertificate/pages/certificates/certificates.module').then(
 						(m) => m.CertificatesModule
 					)
 			}

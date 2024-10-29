@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AlertService, CoreService } from "wacom";
-import { CourseService, Course } from "../../services/course.service";
+import { SchoolcourseService, Schoolcourse } from "../../services/schoolcourse.service";
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
@@ -50,26 +50,26 @@ export class CoursesComponent {
 
   config = {
     create: () => {
-      this._form.modal<Course>(this.form, {
+      this._form.modal<Schoolcourse>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
-          this._sc.create(created as Course);
+          this._ss.create(created as Schoolcourse);
           close();
         },
       });
     },
-    update: (doc: Course) => {
+    update: (doc: Schoolcourse) => {
       this._form
-        .modal<Course>(this.form, [], doc)
-        .then((updated: Course) => {
+        .modal<Schoolcourse>(this.form, [], doc)
+        .then((updated: Schoolcourse) => {
           this._core.copy(updated, doc);
-          this._sc.update(doc);
+          this._ss.update(doc);
         });
     },
-    delete: (doc: Course) => {
+    delete: (doc: Schoolcourse) => {
       this._alert.question({
         text: this._translate.translate(
-          "Common.Are you sure you want to delete this Course?"
+          "Common.Are you sure you want to delete this Schoolcourse?"
         ),
         buttons: [
           {
@@ -78,7 +78,7 @@ export class CoursesComponent {
           {
             text: this._translate.translate("Common.Yes"),
             callback: () => {
-              this._sc.delete(doc);
+              this._ss.delete(doc);
             },
           },
         ],
@@ -87,21 +87,21 @@ export class CoursesComponent {
     buttons: [
       {
         icon: "cloud_download",
-        click: (doc: Course) => {
-          this._form.modalUnique<Course>("courses", "url", doc);
+        click: (doc: Schoolcourse) => {
+          this._form.modalUnique<Schoolcourse>("courses", "url", doc);
         },
       },
     ],
   };
 
-  get rows(): Course[] {
-    return this._sc.courses;
+  get rows(): Schoolcourse[] {
+    return this._ss.schoolcourses;
   }
 
   constructor(
     private _translate: TranslateService,
     private _alert: AlertService,
-    private _sc: CourseService,
+    private _ss: SchoolcourseService,
     private _form: FormService,
     private _core: CoreService
   ) {}
