@@ -4,6 +4,7 @@ import { SchoolcourseService, Schoolcourse } from "../../services/schoolcourse.s
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
+import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./courses.component.html",
@@ -11,6 +12,8 @@ import { FormInterface } from "src/app/core/modules/form/interfaces/form.interfa
 })
 export class CoursesComponent {
   columns = ["name", "description"];
+
+  schoolId = this._router.url.includes('/courses/') ? this._router.url.replace('/courses/', '') : '';
 
   form: FormInterface = this._form.getForm("courses", {
     formId: "courses",
@@ -53,6 +56,9 @@ export class CoursesComponent {
       this._form.modal<Schoolcourse>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
+          if (this.schoolId) {
+            (created as Schoolcourse).school = this.schoolId;
+          }
           this._ss.create(created as Schoolcourse);
           close();
         },
@@ -95,7 +101,9 @@ export class CoursesComponent {
   };
 
   get rows(): Schoolcourse[] {
-    return this._ss.schoolcourses;
+    return this.schoolId
+    ?this._ss.coursesBySchoolId[this.schoolId] || []
+    :this._ss.schoolcourses;
   }
 
   constructor(
@@ -103,6 +111,7 @@ export class CoursesComponent {
     private _alert: AlertService,
     private _ss: SchoolcourseService,
     private _form: FormService,
-    private _core: CoreService
+    private _core: CoreService,
+    private _router: Router
   ) {}
 }
