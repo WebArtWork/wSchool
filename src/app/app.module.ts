@@ -88,16 +88,16 @@ const routes: Routes = [
 					)
 			},
 			{
-				path: 'school',
+				path: 'schools',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'School'
+						title: 'Schools'
 					}
 				},
 				loadChildren: () =>
-					import('./modules/school/pages/school/school.module').then(
-						(m) => m.SchoolModule
+					import('./modules/school/pages/schools/schools.module').then(
+						(m) => m.SchoolsModule
 					)
 			},
 			{

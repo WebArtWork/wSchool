@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from 'src/app/core/core.module';
-import { SchoolComponent } from './school.component';
+import { SchoolsComponent } from './schools.component';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [{
 	path: '',
-	component: SchoolComponent
+	component: SchoolsComponent
 }];
 
 @NgModule({
@@ -14,10 +14,10 @@ const routes: Routes = [{
 		CoreModule
 	],
 	declarations: [
-		SchoolComponent
+		SchoolsComponent
 	],
 	providers: []
 
 })
 
-export class SchoolModule { }
+export class SchoolsModule { }

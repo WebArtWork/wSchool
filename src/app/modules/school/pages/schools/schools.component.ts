@@ -6,15 +6,15 @@ import { TranslateService } from "src/app/core/modules/translate/translate.servi
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
 
 @Component({
-  templateUrl: "./school.component.html",
-  styleUrls: ["./school.component.scss"],
+  templateUrl: "./schools.component.html",
+  styleUrls: ["./schools.component.scss"],
 })
-export class SchoolComponent {
+export class SchoolsComponent {
   columns = ["name", "description"];
 
-  form: FormInterface = this._form.getForm("school", {
-    formId: "school",
-    title: "School",
+  form: FormInterface = this._form.getForm("schools", {
+    formId: "schools",
+    title: "Schools",
     components: [
       {
         name: "Text",
@@ -23,7 +23,7 @@ export class SchoolComponent {
         fields: [
           {
             name: "Placeholder",
-            value: "fill school title",
+            value: "fill schools title",
           },
           {
             name: "Label",
@@ -37,7 +37,7 @@ export class SchoolComponent {
         fields: [
           {
             name: "Placeholder",
-            value: "fill school description",
+            value: "fill schools description",
           },
           {
             name: "Label",
@@ -88,7 +88,7 @@ export class SchoolComponent {
       {
         icon: "cloud_download",
         click: (doc: School) => {
-          this._form.modalUnique<School>("school", "url", doc);
+          this._form.modalUnique<School>("schools", "url", doc);
         },
       },
     ],
