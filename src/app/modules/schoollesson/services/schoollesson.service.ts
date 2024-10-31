@@ -1,4 +1,5 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
+import { HelperService } from "src/app/core/services/helper.service";
 import {
   AlertService,
   CoreService,
@@ -11,13 +12,20 @@ import {
 export interface Schoollesson extends CrudDocument {
   name: string;
   description: string;
+  schoolcourse: string;
 }
 
 @Injectable({
   providedIn: "root",
 })
 export class SchoollessonService extends CrudService<Schoollesson> {
+  _helper = inject(HelperService)
+
   schoollessons: Schoollesson[] = [];
+
+  lessonsByCourseId: Record<string, Schoollesson[]> = {}
+  setLessonsByCourseId = this._helper.createParentIdToChildrenIds<Schoollesson[]>(this.lessonsByCourseId, this.schoollessons, 'schoolcourse')
+  
   constructor(
     _http: HttpService,
     _store: StoreService,
@@ -34,10 +42,16 @@ export class SchoollessonService extends CrudService<Schoollesson> {
       _core
     );
 
-    this.get().subscribe((schoollessons: Schoollesson[]) => this.schoollessons.push(...schoollessons));
+    this.get().subscribe((schoollessons: Schoollesson[]) => {
+      this.schoollessons.push(...schoollessons)
+
+      this.setLessonsByCourseId()
+    });
 
     _core.on("schoollesson_create").subscribe((schoollesson: Schoollesson) => {
       this.schoollessons.push(schoollesson);
+
+      this.setLessonsByCourseId()
     });
 
     _core.on("schoollesson_delete").subscribe((schoollesson: Schoollesson) => {
@@ -45,6 +59,8 @@ export class SchoollessonService extends CrudService<Schoollesson> {
         this.schoollessons.findIndex((o) => o._id === schoollesson._id),
         1
       );
+
+      this.setLessonsByCourseId()
     });
   }
 }

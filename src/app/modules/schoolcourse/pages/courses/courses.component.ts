@@ -97,6 +97,10 @@ export class CoursesComponent {
           this._form.modalUnique<Schoolcourse>("courses", "url", doc);
         },
       },
+      {
+        icon: "work",
+        hrefFunc: (doc: Schoolcourse) => '/lessons/' + doc._id
+      }
     ],
   };
 
