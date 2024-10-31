@@ -94,6 +94,10 @@ export class SchoolsComponent {
       {
 				icon: 'grade',
 				hrefFunc: (doc: School) => '/courses/' + doc._id
+			},
+      {
+				icon: 'assignment',
+				hrefFunc: (doc: School) => '/tests/schools/' + doc._id
 			}
     ],
   };

@@ -100,7 +100,11 @@ export class CoursesComponent {
       {
         icon: "work",
         hrefFunc: (doc: Schoolcourse) => '/lessons/' + doc._id
-      }
+      },
+      {
+				icon: 'assignment',
+				hrefFunc: (doc: Schoolcourse) => '/tests/courses/' + doc._id
+			}
     ],
   };
 

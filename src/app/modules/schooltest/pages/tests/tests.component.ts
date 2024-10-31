@@ -4,6 +4,7 @@ import { SchooltestService, Schooltest } from "../../services/schooltest.service
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
+import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./tests.component.html",
@@ -11,6 +12,9 @@ import { FormInterface } from "src/app/core/modules/form/interfaces/form.interfa
 })
 export class TestsComponent {
   columns = ["name", "description"];
+
+  moduleType = this._router.url.split('/')[2];
+  moduleId = this._router.url.split('/')[3];
 
   form: FormInterface = this._form.getForm("tests", {
     formId: "tests",
@@ -53,6 +57,10 @@ export class TestsComponent {
       this._form.modal<Schooltest>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
+          if (this.moduleId) {
+            (created as Schooltest).moduleType = this.moduleType;
+            (created as Schooltest).moduleId = this.moduleId;
+          }
           this._ss.create(created as Schooltest);
           close();
         },
@@ -95,7 +103,9 @@ export class TestsComponent {
   };
 
   get rows(): Schooltest[] {
-    return this._ss.schooltests;
+    return this.moduleId
+    ?this._ss.testsByModuleId[this.moduleId] || []
+    :this._ss.schooltests;
   }
 
   constructor(
@@ -103,6 +113,7 @@ export class TestsComponent {
     private _alert: AlertService,
     private _ss: SchooltestService,
     private _form: FormService,
-    private _core: CoreService
+    private _core: CoreService,
+    private _router: Router
   ) {}
 }

@@ -1,4 +1,5 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
+import { HelperService } from "src/app/core/services/helper.service";
 import {
   AlertService,
   CoreService,
@@ -11,13 +12,21 @@ import {
 export interface Schooltest extends CrudDocument {
   name: string;
   description: string;
+  moduleType: string;
+  moduleId: string;
 }
 
 @Injectable({
   providedIn: "root",
 })
 export class SchooltestService extends CrudService<Schooltest> {
+  _helper = inject(HelperService)
+
   schooltests: Schooltest[] = [];
+
+  testsByModuleId: Record<string, Schooltest[]> = {}
+  setTestsByModuleId = this._helper.createParentIdToChildrenIds<Schooltest[]>(this.testsByModuleId, this.schooltests, 'moduleId')
+
   constructor(
     _http: HttpService,
     _store: StoreService,
@@ -34,10 +43,16 @@ export class SchooltestService extends CrudService<Schooltest> {
       _core
     );
 
-    this.get().subscribe((schooltests: Schooltest[]) => this.schooltests.push(...schooltests));
+    this.get().subscribe((schooltests: Schooltest[]) => {
+      this.schooltests.push(...schooltests)
+
+      this.setTestsByModuleId()
+    });
 
     _core.on("schooltest_create").subscribe((schooltest: Schooltest) => {
       this.schooltests.push(schooltest);
+
+      this.setTestsByModuleId()
     });
 
     _core.on("schooltest_delete").subscribe((schooltest: Schooltest) => {
@@ -45,6 +60,8 @@ export class SchooltestService extends CrudService<Schooltest> {
         this.schooltests.findIndex((o) => o._id === schooltest._id),
         1
       );
+
+      this.setTestsByModuleId()
     });
   }
 }

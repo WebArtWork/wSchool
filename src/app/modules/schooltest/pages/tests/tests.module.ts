@@ -6,6 +6,15 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [{
 	path: '',
 	component: TestsComponent
+}, {
+	path: 'schools/:schooltest',
+	component: TestsComponent
+}, {
+	path: 'courses/:schooltest',
+	component: TestsComponent
+}, {
+	path: 'lessons/:schooltest',
+	component: TestsComponent
 }];
 
 @NgModule({
