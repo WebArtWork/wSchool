@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./courses.component.scss"],
 })
 export class CoursesComponent {
-  columns = ["name", "description"];
+  columns = ["name", "description", "duration", "cost", "status", "data"];
 
   schoolId = this._router.url.includes('/courses/') ? this._router.url.replace('/courses/', '') : '';
 
@@ -46,6 +46,56 @@ export class CoursesComponent {
             name: "Label",
             value: "Description",
           },
+        ],
+      },
+      {
+        name: "Number",
+        key: "duration",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "set courses duration",
+          },
+          {
+            name: "Label",
+            value: "Duration",
+          },
+        ],
+      },
+      {
+        name: "Number",
+        key: "cost",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "set courses cost",
+          },
+          {
+            name: "Label",
+            value: "Cost",
+          },
+        ],
+      },
+      {
+        name: "Select",
+        key: "status",
+        fields: [
+          {
+            name: "Items",
+            value: ['Active', 'Inactive'],
+          },
+          {
+            name: "Placeholder",
+            value: "choose courses status",
+          },
+          {
+            name: "Label",
+            value: "Status",
+          },
+          {
+						name: 'Multiple',
+						value: false
+					}
         ],
       },
     ],
