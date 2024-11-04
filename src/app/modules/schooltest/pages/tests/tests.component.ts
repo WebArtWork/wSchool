@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./tests.component.scss"],
 })
 export class TestsComponent {
-  columns = ["name", "description"];
+  columns = ["name", "description", "duration", "questions", "data"];
 
   moduleType = this._router.url.split('/')[2];
   moduleId = this._router.url.split('/')[3];
@@ -46,6 +46,77 @@ export class TestsComponent {
           {
             name: "Label",
             value: "Description",
+          },
+        ],
+      },
+      {
+        name: "Number",
+        key: "duration",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "set tests duration",
+          },
+          {
+            name: "Label",
+            value: "Duration",
+          },
+        ],
+      },
+    ],
+  });
+
+  formQuestions: FormInterface = this._form.getForm("testQuestions", {
+    formId: "testQuestions",
+    title: "Questions",
+    components: [
+      {
+        name: "Select",
+        key: "type",
+        fields: [
+          {
+            name: "Items",
+            value: ['Text', 'Radio', 'Checkbox', 'ArrayTexts', 'TwoArrayConnects'],
+          },
+          {
+            name: "Placeholder",
+            value: "choose tests type",
+          },
+          {
+            name: "Label",
+            value: "Type",
+          },
+          {
+						name: 'Multiple',
+						value: false
+					}
+        ],
+      },
+      {
+        name: "Tags",
+        key: "answers",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill tests answers",
+          },
+          {
+            name: "Label",
+            value: "Answers",
+          },
+        ],
+      },
+      {
+        name: "Tags",
+        key: "connectTo",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "set tests connections",
+          },
+          {
+            name: "Label",
+            value: "Connections",
           },
         ],
       },
@@ -93,6 +164,18 @@ export class TestsComponent {
       });
     },
     buttons: [
+      {
+        icon: "assignment_turned_in",
+        click: (doc: Schooltest) => {
+          this._form.modal<Schooltest>(this.formQuestions, {
+            label: "Update questions",
+            click: (created: unknown, close: () => void) => {
+              this._ss.create(created as Schooltest);
+              close();
+            },
+          });
+        },
+      },
       {
         icon: "cloud_download",
         click: (doc: Schooltest) => {

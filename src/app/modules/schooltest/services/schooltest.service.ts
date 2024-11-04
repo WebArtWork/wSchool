@@ -14,6 +14,7 @@ export interface Schooltest extends CrudDocument {
   description: string;
   moduleType: string;
   moduleId: string;
+  duration: number;
 }
 
 @Injectable({
