@@ -10,10 +10,12 @@ import {
 } from "wacom";
 
 export interface Schoolcertificate extends CrudDocument {
-  name: string;
-  description: string;
+  title: string;
   moduleType: string;
   moduleId: string;
+  received: Date;
+  grade: number;
+  expired: Date;
 }
 
 @Injectable({

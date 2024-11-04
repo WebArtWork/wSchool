@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./certificates.component.scss"],
 })
 export class CertificatesComponent {
-  columns = ["name", "description"];
+  columns = ["title", "received", "grade", "expired", "status", "data"];
 
   moduleType = this._router.url.split('/')[2];
   moduleId = this._router.url.split('/')[3];
@@ -22,7 +22,7 @@ export class CertificatesComponent {
     components: [
       {
         name: "Text",
-        key: "name",
+        key: "title",
         focused: true,
         fields: [
           {
@@ -36,17 +36,67 @@ export class CertificatesComponent {
         ],
       },
       {
-        name: "Text",
-        key: "description",
+        name: "Date",
+        key: "received",
         fields: [
           {
             name: "Placeholder",
-            value: "fill certificates description",
+            value: "set receiving date",
           },
           {
             name: "Label",
-            value: "Description",
+            value: "Received",
           },
+        ],
+      },
+      {
+        name: "Number",
+        key: "grade",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "set certificates grade",
+          },
+          {
+            name: "Label",
+            value: "Grade",
+          },
+        ],
+      },
+      {
+        name: "Date",
+        key: "expired",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "set expiration date",
+          },
+          {
+            name: "Label",
+            value: "Expired",
+          },
+        ],
+      },
+      {
+        name: "Select",
+        key: "status",
+        fields: [
+          {
+            name: "Items",
+            value: ['Pending', 'Received', 'Expired'],
+          },
+          {
+            name: "Placeholder",
+            value: "choose certificates status",
+          },
+          {
+            name: "Label",
+            value: "Status",
+          },
+          {
+						name: 'Multiple',
+						value: false
+					}
         ],
       },
     ],
