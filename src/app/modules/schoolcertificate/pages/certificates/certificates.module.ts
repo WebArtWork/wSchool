@@ -6,6 +6,12 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [{
 	path: '',
 	component: CertificatesComponent
+}, {
+	path: 'courses/:schoolcertificate',
+	component: CertificatesComponent
+}, {
+	path: 'tests/:schoolcertificate',
+	component: CertificatesComponent
 }];
 
 @NgModule({

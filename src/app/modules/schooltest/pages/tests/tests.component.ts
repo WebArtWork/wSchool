@@ -99,6 +99,10 @@ export class TestsComponent {
           this._form.modalUnique<Schooltest>("tests", "url", doc);
         },
       },
+      {
+				icon: 'card_membership',
+				hrefFunc: (doc: Schooltest) => '/certificates/tests/' + doc._id
+			}
     ],
   };
 

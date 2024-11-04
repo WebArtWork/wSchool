@@ -4,6 +4,7 @@ import { SchoolcertificateService, Schoolcertificate } from "../../services/scho
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
+import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./certificates.component.html",
@@ -11,6 +12,9 @@ import { FormInterface } from "src/app/core/modules/form/interfaces/form.interfa
 })
 export class CertificatesComponent {
   columns = ["name", "description"];
+
+  moduleType = this._router.url.split('/')[2];
+  moduleId = this._router.url.split('/')[3];
 
   form: FormInterface = this._form.getForm("certificates", {
     formId: "certificates",
@@ -53,6 +57,10 @@ export class CertificatesComponent {
       this._form.modal<Schoolcertificate>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
+          if (this.moduleId) {
+            (created as Schoolcertificate).moduleType = this.moduleType;
+            (created as Schoolcertificate).moduleId = this.moduleId;
+          }
           this._ss.create(created as Schoolcertificate);
           close();
         },
@@ -95,7 +103,9 @@ export class CertificatesComponent {
   };
 
   get rows(): Schoolcertificate[] {
-    return this._ss.schoolcertificates;
+    return this.moduleId
+    ?this._ss.certificatesByModuleId[this.moduleId] || []
+    :this._ss.schoolcertificates;
   }
 
   constructor(
@@ -103,6 +113,7 @@ export class CertificatesComponent {
     private _alert: AlertService,
     private _ss: SchoolcertificateService,
     private _form: FormService,
-    private _core: CoreService
+    private _core: CoreService,
+    private _router: Router
   ) {}
 }

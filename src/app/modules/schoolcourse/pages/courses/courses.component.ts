@@ -104,6 +104,10 @@ export class CoursesComponent {
       {
 				icon: 'assignment',
 				hrefFunc: (doc: Schoolcourse) => '/tests/courses/' + doc._id
+			},
+      {
+				icon: 'card_membership',
+				hrefFunc: (doc: Schoolcourse) => '/certificates/courses/' + doc._id
 			}
     ],
   };
