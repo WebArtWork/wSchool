@@ -13,6 +13,7 @@ export interface Schoollesson extends CrudDocument {
   name: string;
   description: string;
   schoolcourse: string;
+  links: [string];
 }
 
 @Injectable({

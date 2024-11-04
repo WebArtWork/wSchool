@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./lessons.component.scss"],
 })
 export class LessonsComponent {
-  columns = ["name", "description"];
+  columns = ["name", "description", "links", "data"];
 
   courseId = this._router.url.includes('/lessons/') ? this._router.url.replace('/lessons/', '') : '';
 
@@ -45,6 +45,20 @@ export class LessonsComponent {
           {
             name: "Label",
             value: "Description",
+          },
+        ],
+      },
+      {
+        name: "Tags",
+        key: "links",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "add lessons links",
+          },
+          {
+            name: "Label",
+            value: "Links",
           },
         ],
       },
