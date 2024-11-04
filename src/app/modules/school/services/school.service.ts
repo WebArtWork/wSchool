@@ -11,6 +11,12 @@ import {
 export interface School extends CrudDocument {
   name: string;
   description: string;
+  address: string;
+  phone: string;
+  email: string;
+  year: string;
+  signature: string;
+  curency: string;
 }
 
 @Injectable({

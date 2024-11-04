@@ -10,7 +10,7 @@ import { FormInterface } from "src/app/core/modules/form/interfaces/form.interfa
   styleUrls: ["./schools.component.scss"],
 })
 export class SchoolsComponent {
-  columns = ["name", "description"];
+  columns = ["name", "description", "address", "phone", "email", "year", "signature", "curency", "type", "data"];
 
   form: FormInterface = this._form.getForm("schools", {
     formId: "schools",
@@ -43,6 +43,112 @@ export class SchoolsComponent {
             name: "Label",
             value: "Description",
           },
+        ],
+      },
+      {
+        name: "Text",
+        key: "address",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill schools address",
+          },
+          {
+            name: "Label",
+            value: "Address",
+          },
+        ],
+      },
+      {
+        name: "Text",
+        key: "phone",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill schools phone",
+          },
+          {
+            name: "Label",
+            value: "Phone",
+          },
+        ],
+      },
+      {
+        name: "Text",
+        key: "email",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill schools email",
+          },
+          {
+            name: "Label",
+            value: "Email",
+          },
+        ],
+      },
+      {
+        name: "Text",
+        key: "year",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill schools year",
+          },
+          {
+            name: "Label",
+            value: "Year",
+          },
+        ],
+      },
+      {
+        name: "Text",
+        key: "signature",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill schools signature",
+          },
+          {
+            name: "Label",
+            value: "Signature",
+          },
+        ],
+      },
+      {
+        name: "Text",
+        key: "curency",
+        fields: [
+          {
+            name: "Placeholder",
+            value: "fill schools curency",
+          },
+          {
+            name: "Label",
+            value: "Curency",
+          },
+        ],
+      },
+      {
+        name: "Select",
+        key: "type",
+        fields: [
+          {
+            name: "Items",
+            value: ['Offline', 'Online'],
+          },
+          {
+            name: "Placeholder",
+            value: "choose schools type",
+          },
+          {
+            name: "Label",
+            value: "Type",
+          },
+          {
+						name: 'Multiple',
+						value: false
+					}
         ],
       },
     ],
