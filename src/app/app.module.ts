@@ -75,6 +75,36 @@ const routes: Routes = [
 		children: [
 			/* user */
 			{
+				path: 'dashboardStudent',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'DashboardStudent'
+					}
+				},
+				loadChildren: () => import('./pages/user/dashboard-student/dashboard-student.module').then(m => m.DashboardStudentModule)
+			}, 
+			{
+				path: 'dashboardTeacher',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'DashboardTeacher'
+					}
+				},
+				loadChildren: () => import('./pages/user/dashboard-teacher/dashboard-teacher.module').then(m => m.DashboardTeacherModule)
+			}, 
+			{
+				path: 'dashboardOwner',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'DashboardOwner'
+					}
+				},
+				loadChildren: () => import('./pages/user/dashboard-owner/dashboard-owner.module').then(m => m.DashboardOwnerModule)
+			}, 
+			{
 				path: 'profile',
 				canActivate: [MetaGuard],
 				data: {
