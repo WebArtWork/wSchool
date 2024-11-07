@@ -1,10 +1,11 @@
 import { Component } from "@angular/core";
-import { AlertService, CoreService } from "wacom";
+import { AlertService, CoreService, ModalService } from "wacom";
 import { SchooltestService, Schooltest } from "../../services/schooltest.service";
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
 import { Router } from "@angular/router";
+import { TestQuestionsComponent } from './test-questions/test-questions.component';
 
 @Component({
   templateUrl: "./tests.component.html",
@@ -66,63 +67,6 @@ export class TestsComponent {
     ],
   });
 
-  formQuestions: FormInterface = this._form.getForm("testQuestions", {
-    formId: "testQuestions",
-    title: "Questions",
-    components: [
-      {
-        name: "Select",
-        key: "type",
-        fields: [
-          {
-            name: "Items",
-            value: ['Text', 'Radio', 'Checkbox', 'ArrayTexts', 'TwoArrayConnects'],
-          },
-          {
-            name: "Placeholder",
-            value: "choose tests type",
-          },
-          {
-            name: "Label",
-            value: "Type",
-          },
-          {
-						name: 'Multiple',
-						value: false
-					}
-        ],
-      },
-      {
-        name: "Tags",
-        key: "answers",
-        fields: [
-          {
-            name: "Placeholder",
-            value: "fill tests answers",
-          },
-          {
-            name: "Label",
-            value: "Answers",
-          },
-        ],
-      },
-      {
-        name: "Tags",
-        key: "connectTo",
-        fields: [
-          {
-            name: "Placeholder",
-            value: "set tests connections",
-          },
-          {
-            name: "Label",
-            value: "Connections",
-          },
-        ],
-      },
-    ],
-  });
-
   config = {
     create: () => {
       this._form.modal<Schooltest>(this.form, {
@@ -166,15 +110,13 @@ export class TestsComponent {
     buttons: [
       {
         icon: "assignment_turned_in",
-        click: (doc: Schooltest) => {
-          this._form.modal<Schooltest>(this.formQuestions, {
-            label: "Update questions",
-            click: (created: unknown, close: () => void) => {
-              this._ss.create(created as Schooltest);
-              close();
-            },
-          });
-        },
+        click: (test: Schooltest) => {
+					test.questions = test.questions || [];
+					this._modal.show({
+						component: TestQuestionsComponent,
+						test
+					});
+				},
       },
       {
         icon: "cloud_download",
@@ -201,6 +143,7 @@ export class TestsComponent {
     private _ss: SchooltestService,
     private _form: FormService,
     private _core: CoreService,
-    private _router: Router
+    private _router: Router,
+    private _modal: ModalService
   ) {}
 }

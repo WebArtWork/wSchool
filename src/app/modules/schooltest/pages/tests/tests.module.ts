@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CoreModule } from 'src/app/core/core.module';
 import { TestsComponent } from './tests.component';
 import { Routes, RouterModule } from '@angular/router';
+import { TestQuestionsComponent } from './test-questions/test-questions.component';
 
 const routes: Routes = [{
 	path: '',
@@ -23,7 +24,8 @@ const routes: Routes = [{
 		CoreModule
 	],
 	declarations: [
-		TestsComponent
+		TestsComponent,
+		TestQuestionsComponent
 	],
 	providers: []
 

@@ -9,12 +9,20 @@ import {
   CrudDocument,
 } from "wacom";
 
+export interface Schooltestquestion {
+	text: string;
+	type: 'Text' | 'Radio' | 'Checkbox' | 'ArrayTexts' | 'TwoArrayConnects',
+	answers: string[];
+	connectTo: string[];
+}
+
 export interface Schooltest extends CrudDocument {
   name: string;
   description: string;
   moduleType: string;
   moduleId: string;
   duration: number;
+  questions: Schooltestquestion[];
 }
 
 @Injectable({
