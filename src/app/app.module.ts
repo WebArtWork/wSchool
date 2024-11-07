@@ -75,16 +75,6 @@ const routes: Routes = [
 		children: [
 			/* user */
 			{
-				path: 'dashboard-owner',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'Dashboard-owner'
-					}
-				},
-				loadChildren: () => import('./pages/user/dashboard-owner/dashboard-owner.module').then(m => m.Dashboard)
-			}, 
-			{
 				path: 'profile',
 				canActivate: [MetaGuard],
 				data: {
