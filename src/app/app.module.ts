@@ -75,6 +75,76 @@ const routes: Routes = [
 		children: [
 			/* user */
 			{
+				path: 'certificateProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'CertificateProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/certificate-profile/certificate-profile.module').then(m => m.CertificateProfileModule)
+			}, 
+			{
+				path: 'certificatesProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'CertificatesProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/certificates-profile/certificates-profile.module').then(m => m.CertificatesProfileModule)
+			}, 
+			{
+				path: 'testProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'TestProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/test-profile/test-profile.module').then(m => m.TestProfileModule)
+			}, 
+			{
+				path: 'lessonProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'LessonProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/lesson-profile/lesson-profile.module').then(m => m.LessonProfileModule)
+			}, 
+			{
+				path: 'courseProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'CourseProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/course-profile/course-profile.module').then(m => m.CourseProfileModule)
+			}, 
+			{
+				path: 'coursesProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'CoursesProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/courses-profile/courses-profile.module').then(m => m.CoursesProfileModule)
+			}, 
+			{
+				path: 'schoolsProfile',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'SchoolsProfile'
+					}
+				},
+				loadChildren: () => import('./pages/user/schools-profile/schools-profile.module').then(m => m.SchoolsProfileModule)
+			}, 
+			{
 				path: 'dashboardStudent',
 				canActivate: [MetaGuard],
 				data: {
