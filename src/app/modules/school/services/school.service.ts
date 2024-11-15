@@ -17,6 +17,7 @@ export interface School extends CrudDocument {
   year: string;
   signature: string;
   curency: string;
+  authorId: string;
 }
 
 @Injectable({

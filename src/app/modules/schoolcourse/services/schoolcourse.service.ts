@@ -15,6 +15,7 @@ export interface Schoolcourse extends CrudDocument {
   school: string;
   duration: number;
   cost: number;
+  authorId: string;
 }
 
 @Injectable({

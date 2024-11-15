@@ -4,6 +4,7 @@ import { SchoolService, School } from "../../services/school.service";
 import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
+import { UserService } from "src/app/modules/user/services/user.service";
 
 @Component({
   templateUrl: "./schools.component.html",
@@ -159,6 +160,7 @@ export class SchoolsComponent {
       this._form.modal<School>(this.form, {
         label: "Create",
         click: (created: unknown, close: () => void) => {
+          (created as School).authorId = this._us.user._id;
           this._ss.create(created as School);
           close();
         },
@@ -209,7 +211,7 @@ export class SchoolsComponent {
   };
 
   get rows(): School[] {
-    return this._ss.schools;
+    return this._ss.schools.filter(school => school.authorId === this._us.user._id);
   }
 
   constructor(
@@ -217,6 +219,7 @@ export class SchoolsComponent {
     private _alert: AlertService,
     private _ss: SchoolService,
     private _form: FormService,
-    private _core: CoreService
+    private _core: CoreService,
+    private _us: UserService
   ) {}
 }

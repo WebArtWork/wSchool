@@ -5,6 +5,7 @@ import { FormService } from "src/app/core/modules/form/form.service";
 import { TranslateService } from "src/app/core/modules/translate/translate.service";
 import { FormInterface } from "src/app/core/modules/form/interfaces/form.interface";
 import { Router } from "@angular/router";
+import { UserService } from "src/app/modules/user/services/user.service";
 
 @Component({
   templateUrl: "./courses.component.html",
@@ -109,6 +110,7 @@ export class CoursesComponent {
           if (this.schoolId) {
             (created as Schoolcourse).school = this.schoolId;
           }
+          (created as Schoolcourse).authorId = this._us.user._id;
           this._ss.create(created as Schoolcourse);
           close();
         },
@@ -165,7 +167,7 @@ export class CoursesComponent {
   get rows(): Schoolcourse[] {
     return this.schoolId
     ?this._ss.coursesBySchoolId[this.schoolId] || []
-    :this._ss.schoolcourses;
+    :this._ss.schoolcourses.filter(schoolcourse => schoolcourse.authorId === this._us.user._id);
   }
 
   constructor(
@@ -174,6 +176,7 @@ export class CoursesComponent {
     private _ss: SchoolcourseService,
     private _form: FormService,
     private _core: CoreService,
-    private _router: Router
+    private _router: Router,
+    private _us: UserService
   ) {}
 }
