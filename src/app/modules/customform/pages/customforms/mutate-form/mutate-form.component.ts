@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormService } from 'src/app/core/modules/form/form.service';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
 
@@ -8,6 +8,8 @@ import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interfa
 	styleUrls: ['./mutate-form.component.scss']
 })
 export class MutateFormComponent {
+	fs = inject(FormService);
+
 	close: () => void;
 
 	form: FormInterface = this.fs.new();
@@ -21,7 +23,7 @@ export class MutateFormComponent {
 
 		this.form.components.push({
 			name: component.name,
-			fields: (component.fields||[]).map((f) => {
+			fields: (component.fields || []).map((f) => {
 				return {
 					name: f,
 					value: ''
@@ -29,6 +31,4 @@ export class MutateFormComponent {
 			})
 		});
 	}
-
-	constructor(public fs: FormService) {}
 }

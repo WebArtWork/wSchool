@@ -1,0 +1,16 @@
+<div *ngFor="let question of questions; index as i;">
+	<wbutton (click)="questionIndex = i; change()">Edit question</wbutton>
+
+	<wform
+		*ngIf="questionIndex === i"
+		[submition]="question"
+		(wChange)="change()"
+		[config]="form"
+	></wform>
+
+	<wbutton (click)="test.questions.splice(i, 1); update()"
+		>Remove question</wbutton
+	>
+</div>
+
+<wbutton (click)="addQuestion()">Add question</wbutton>

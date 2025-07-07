@@ -1,0 +1,5 @@
+<wtable title="Sessions" [columns]="columns" [config]="config" [rows]="rows">
+	<ng-template cell="course" let-element>
+		{{courseName(element.course)}}
+	</ng-template>
+</wtable>

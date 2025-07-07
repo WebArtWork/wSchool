@@ -16,7 +16,6 @@ export interface FormComponentInterface {
 	// or
 	name?: string; // template name
 	key?: string; // submition location
-	root?: boolean; // if key should be applied to data or root document
 	focus?: () => void; // to set focus in components where we have focus functionality
 	focused?: boolean; // in case of focus functionality, we focus on init
 	hidden?: boolean; // if component should be hidden or shown
@@ -27,4 +26,5 @@ export interface FormComponentInterface {
 	disabled?: boolean; // set component disabled
 	// disabled?: boolean | (value: unknown) => boolean;
 	component?: unknown; // deprecated
+	resetFields?: () => void;
 }

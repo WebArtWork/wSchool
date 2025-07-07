@@ -1,57 +1,18 @@
-import { Injectable } from "@angular/core";
-import {
-  AlertService,
-  CoreService,
-  HttpService,
-  StoreService,
-  CrudService,
-  CrudDocument,
-} from "wacom";
-
-export interface School extends CrudDocument {
-  name: string;
-  description: string;
-  address: string;
-  phone: string;
-  email: string;
-  year: string;
-  signature: string;
-  curency: string;
-  authorId: string;
-}
+import { Injectable } from '@angular/core';
+import { School } from '../interfaces/school.interface';
+import { CrudService } from 'wacom';
 
 @Injectable({
-  providedIn: "root",
+	providedIn: 'root'
 })
 export class SchoolService extends CrudService<School> {
-  schools: School[] = [];
-  constructor(
-    _http: HttpService,
-    _store: StoreService,
-    _alert: AlertService,
-    _core: CoreService
-  ) {
-    super(
-      {
-        name: "school",
-      },
-      _http,
-      _store,
-      _alert,
-      _core
-    );
+	schools: School[] = this.getDocs();
 
-    this.get().subscribe((schools: School[]) => this.schools.push(...schools));
+	constructor() {
+		super({
+			name: 'school'
+		});
 
-    _core.on("school_create").subscribe((school: School) => {
-      this.schools.push(school);
-    });
-
-    _core.on("school_delete").subscribe((school: School) => {
-      this.schools.splice(
-        this.schools.findIndex((o) => o._id === school._id),
-        1
-      );
-    });
-  }
+		this.get();
+	}
 }

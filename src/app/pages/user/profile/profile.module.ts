@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from 'src/app/core/core.module';
+
+import { RouterModule, Routes } from '@angular/router';
 import { ProfileComponent } from './profile.component';
-import { Routes, RouterModule } from '@angular/router';
-import { FileModule } from 'src/app/core/modules/file/file.module';
 
 const routes: Routes = [
 	{
 		path: '',
-		component: ProfileComponent
+		loadComponent: () =>
+			import('./profile.component').then((m) => m.ProfileComponent)
 	}
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(routes), CoreModule, FileModule],
-	declarations: [ProfileComponent],
+	imports: [RouterModule.forChild(routes), CoreModule, ProfileComponent],
 	providers: []
 })
 export class ProfileModule {}

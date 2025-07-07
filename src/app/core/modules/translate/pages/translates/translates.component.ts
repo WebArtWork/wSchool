@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
-import { Language, TranslateService, Word } from '../../translate.service';
-import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
+import { Component, inject } from '@angular/core';
 import { FormService } from 'src/app/core/modules/form/form.service';
+import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
 import { HttpService } from 'wacom';
+import { ButtonComponent } from '../../../button/button.component';
+import { SelectComponent } from '../../../select/select.component';
+import { TableComponent } from '../../../table/table.component';
+import { CellDirective } from '../../../table/table.directive';
+import { TranslateDirective } from '../../translate.directive';
+import { TranslatePipe } from '../../translate.pipe';
+import { Language, TranslateService, Word } from '../../translate.service';
 
 interface Translate {
 	translate: string;
@@ -17,11 +23,23 @@ interface TranslateAll {
 
 @Component({
 	templateUrl: './translates.component.html',
-	styleUrls: ['./translates.component.scss']
+	styleUrls: ['./translates.component.scss'],
+	imports: [
+		TranslateDirective,
+		SelectComponent,
+		ButtonComponent,
+		TableComponent,
+		CellDirective,
+		TranslatePipe
+	]
 })
 export class TranslatesComponent {
+	ts = inject(TranslateService);
+	private _form = inject(FormService);
+	private _http = inject(HttpService);
+
 	columns = ['page', 'word', 'translation'];
-	form: FormInterface = this._form.getForm('translate', {
+	form: FormInterface = this._form.prepareForm({
 		formId: 'translate',
 		title: 'Translate',
 		components: [
@@ -46,7 +64,7 @@ export class TranslatesComponent {
 			}
 		]
 	});
-	formAll: FormInterface = this._form.getForm('translateAll', {
+	formAll: FormInterface = this._form.prepareForm({
 		formId: 'translateAll',
 		title: 'Translate All',
 		components: [
@@ -135,17 +153,11 @@ export class TranslatesComponent {
 		});
 	}
 
-	constructor(
-		public ts: TranslateService,
-		private _form: FormService,
-		private _http: HttpService
-	) {}
-
 	translateAll(missed = false): void {
 		const rows = missed
 			? this.rows.filter(
-				(r) => !this.ts.translates[this.ts.language.code][r.slug]
-			)
+					(r) => !this.ts.translates[this.ts.language.code][r.slug]
+				)
 			: this.rows;
 		const words = JSON.stringify(rows.map((r) => r.word));
 		const slugs = rows.map((r) => r.slug);

@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-	name: 'perPage'
-})
+@Pipe({ name: 'perPage' })
 export class PerPagePipe implements PipeTransform {
 	/**
 	 * Transforms an array of data by paginating and sorting it according to the provided configuration.

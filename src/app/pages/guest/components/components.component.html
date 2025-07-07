@@ -1,8 +1,10 @@
 <div class="wrapper-com">
+	<winput label="Clearable" [clearable]="true"></winput>
 	<div>
 		<h2>Document Preview:</h2>
 		<span>{{submition|json}}</span>
 	</div>
+
 	<wform [config]="form" [submition]="submition"></wform>
 
 	<winput></winput>
@@ -10,6 +12,8 @@
 	<winput type="textarea"></winput>
 
 	<winput type="radio" [items]="['banana', 'lemon', 'lime']"></winput>
+
+	<winput type="checkbox" [items]="['banana', 'lemon', 'lime']"></winput>
 
 	<winput type="checkbox" label="Hello World"></winput>
 

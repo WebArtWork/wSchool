@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CoreService, HttpService, StoreService } from 'wacom';
 import { languages } from './languages';
@@ -22,17 +22,61 @@ export interface Word {
 	providedIn: 'root'
 })
 export class TranslateService {
+	private _store = inject(StoreService);
+	private _http = inject(HttpService);
+	private _core = inject(CoreService);
+
 	readonly allLanguages = languages;
+
 	readonly appId = (environment as unknown as { appId: string }).appId;
 
-	constructor(
-		private store: StoreService,
-		private http: HttpService,
-		private _core: CoreService
-	) {
-		this.store.getJson('translates', (translates) => {
+	readonly defaultLanguageCode = (
+		environment as unknown as { defaultLanguageCode: string }
+	).defaultLanguageCode;
+
+	// Array of all words for translation
+	words: Word[] = [];
+
+	// Array of pages for words
+	pages: string[] = [];
+
+	// Array of supported languages
+	languages: Language[] = (
+		environment as unknown as { languages: Language[] }
+	).languages
+		? (environment as unknown as { languages: Language[] }).languages
+		: [
+				{
+					code: 'en',
+					name: 'English',
+					origin: 'English'
+				}
+		  ];
+
+	// Currently selected language
+	language: Language = this.defaultLanguageCode
+		? languages.find((l) => l.code === this.defaultLanguageCode) || {
+				code: 'en',
+				name: 'English',
+				origin: 'English'
+		  }
+		: this.languages.length
+		? this.languages[0]
+		: {
+				code: 'en',
+				name: 'English',
+				origin: 'English'
+		  };
+
+	/** Inserted by Angular inject() migration for backwards compatibility */
+	constructor(...args: unknown[]);
+
+	constructor() {
+		this._store.getJson('translates', (translates) => {
 			if (translates) {
 				this.translates = translates || {};
+
+				this._core.complete('translate');
 			}
 		});
 
@@ -40,44 +84,47 @@ export class TranslateService {
 			this.languages = languages;
 		});
 
-		this.store.getJson('words', (words) => {
+		this._store.getJson('words', (words) => {
 			if (words) {
 				this.words = words;
 			}
 		});
 
-		this.store.getJson('language', (language: Language) => {
+		this._store.getJson('language', (language: Language) => {
 			if (language) {
 				this.set_language(language);
 			}
 		});
 
-		this.http.get('/api/translate/get' + (this.appId ? '/' + this.appId : ''), (obj) => {
-			if (obj) {
-				this.translates = obj;
-				this.store.setJson('translates', this.translates);
-			}
-		});
+		this._http.get(
+			'/api/translate/get' + (this.appId ? '/' + this.appId : ''),
+			(obj) => {
+				if (obj) {
+					this.translates = obj;
 
-		this.http.get('/api/word/get' + (this.appId ? '/' + this.appId : ''), (arr) => {
-			if (arr) {
-				this.words = arr;
-				this.store.setJson('words', this.words);
-				for (let i = 0; i < arr.length; i++) {
-					if (this.pages.indexOf(arr[i].page) < 0) {
-						this.pages.push(arr[i].page);
-					}
+					this._core.complete('translate');
+
+					this._store.setJson('translates', this.translates);
 				}
-				this._wordsLoaded = true;
 			}
-		});
+		);
+
+		this._http.get(
+			'/api/word/get' + (this.appId ? '/' + this.appId : ''),
+			(arr) => {
+				if (arr) {
+					this.words = arr;
+					this._store.setJson('words', this.words);
+					for (let i = 0; i < arr.length; i++) {
+						if (this.pages.indexOf(arr[i].page) < 0) {
+							this.pages.push(arr[i].page);
+						}
+					}
+					this._wordsLoaded = true;
+				}
+			}
+		);
 	}
-
-	// Array of all words for translation
-	words: Word[] = [];
-
-	// Array of pages for words
-	pages: string[] = [];
 
 	/**
 	 * Deletes a word and its associated translation from the backend and local state.
@@ -88,38 +135,20 @@ export class TranslateService {
 			if (this.words[i]._id == word._id) this.words.splice(i, 1);
 		}
 
-		this.http.post('/api/word/delete' + (this.appId ? '/' + this.appId : ''), {
-			_id: word._id
-		});
-
-		this.http.post('/api/translate/delete' + (this.appId ? '/' + this.appId : ''), {
-			slug: word.slug
-		});
-	}
-
-	/* Translate Use */
-
-	// Array of supported languages
-	languages: Language[] = (
-		environment as unknown as { languages: Language[] }
-	).languages
-		? (environment as unknown as { languages: Language[] }).languages
-		: [
+		this._http.post(
+			'/api/word/delete' + (this.appId ? '/' + this.appId : ''),
 			{
-				code: 'en',
-				name: 'English',
-				origin: 'English'
+				_id: word._id
 			}
-		];
+		);
 
-	// Currently selected language
-	language: Language = this.languages.length
-		? this.languages[0]
-		: {
-			code: 'en',
-			name: 'English',
-			origin: 'English'
-		};
+		this._http.post(
+			'/api/translate/delete' + (this.appId ? '/' + this.appId : ''),
+			{
+				slug: word.slug
+			}
+		);
+	}
 
 	/**
 	 * Sets the current language and updates the translations.
@@ -127,7 +156,7 @@ export class TranslateService {
 	 */
 	set_language(language: Language) {
 		if (language) {
-			this.http.post('/api/translate/set', {
+			this._http.post('/api/translate/set', {
 				appId: this.appId,
 				language: language.code
 			});
@@ -136,7 +165,7 @@ export class TranslateService {
 
 			this.reset();
 
-			this.store.setJson('language', language);
+			this._store.setJson('language', language);
 		}
 	}
 
@@ -155,13 +184,14 @@ export class TranslateService {
 			}
 		}
 
-		this.store.setJson('language', this.language);
+		this._store.setJson('language', this.language);
 	}
 
 	// Dictionary of translations
 	translates: any = {};
 
 	resets: any = {};
+
 	now = Date.now();
 
 	/**
@@ -225,6 +255,7 @@ export class TranslateService {
 	}
 
 	private _created: Record<string, boolean> = {};
+
 	private _wordsLoaded = false;
 
 	/**
@@ -239,7 +270,7 @@ export class TranslateService {
 		if (this._wordsLoaded) {
 			this._created[slug] = true;
 
-			this.http.post(
+			this._http.post(
 				'/api/word/create',
 				{
 					appId: this.appId,
@@ -269,14 +300,14 @@ export class TranslateService {
 	 */
 	update_translate(slug: string, languageCode: string, translate: string) {
 		this._core.afterWhile(this, () => {
-			this.http.post('/api/translate/create', {
+			this._http.post('/api/translate/create', {
 				appId: this.appId,
 				slug,
 				translate,
 				lang: languageCode
 			});
 
-			this.store.setJson('translates', this.translates);
+			this._store.setJson('translates', this.translates);
 
 			if (
 				this.language.code === languageCode &&
@@ -295,7 +326,7 @@ export class TranslateService {
 	 * Downloads the translations as a JSON file.
 	 */
 	download_json() {
-		this.http.get('/api/translate/get_translates', (obj) => {
+		this._http.get('/api/translate/get_translates', (obj) => {
 			const dataStr =
 				'data:text/json;charset=utf-8,' +
 				encodeURIComponent(JSON.stringify(this.translates));

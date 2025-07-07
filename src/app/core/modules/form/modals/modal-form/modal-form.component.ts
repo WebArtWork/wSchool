@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CoreService } from 'wacom';
+import { ButtonComponent } from '../../../button/button.component';
+import { FormComponent } from '../../form.component';
 import { FormModalButton } from '../../form.service';
 import { FormInterface } from '../../interfaces/form.interface';
-import { CoreService } from 'wacom';
 
 @Component({
 	templateUrl: './modal-form.component.html',
-	styleUrls: ['./modal-form.component.scss']
+	styleUrls: ['./modal-form.component.scss'],
+	imports: [FormComponent, ButtonComponent, NgClass]
 })
 export class ModalFormComponent {
+	private _core = inject(CoreService);
+
 	form: FormInterface;
 
 	submition: Record<string, unknown>;
@@ -20,11 +26,9 @@ export class ModalFormComponent {
 
 	close: () => void;
 	// eslint-disable-next-line
-	submit: (form: any) => void;
+	submit: (form: any) => void = (form: any) => {};
 	// eslint-disable-next-line
-	change: (form: any) => void;
+	change: (form: any) => void = (form: any) => {};
 
 	buttons: FormModalButton[];
-
-	constructor(private _core: CoreService) {}
 }

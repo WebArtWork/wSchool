@@ -1,11 +1,10 @@
-import { OnInit, Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, inject, OnInit } from '@angular/core';
 import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 
-@Directive({
-	selector: '[translate]'
-})
+@Directive({ selector: '[translate]' })
 export class TranslateDirective implements OnInit {
-	constructor(public elementRef: ElementRef, private tr: TranslateService) { }
+	elementRef = inject(ElementRef);
+	private tr = inject(TranslateService);
 
 	/**
 	 * On initialization, this directive replaces the innerHTML of the element

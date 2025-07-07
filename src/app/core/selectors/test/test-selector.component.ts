@@ -4,9 +4,10 @@ import {
 	Input,
 	OnChanges,
 	Output,
-	SimpleChanges
+	SimpleChanges,
+	inject
 } from '@angular/core';
-import { TestService, Test } from 'src/app/core/services/test.service';
+import { Test, TestService } from 'src/app/core/services/test.service';
 
 @Component({
 	selector: 'test-selector',
@@ -14,6 +15,8 @@ import { TestService, Test } from 'src/app/core/services/test.service';
 	styleUrls: ['./test-selector.component.scss']
 })
 export class TestSelectorComponent implements OnChanges {
+	private _testService = inject(TestService);
+
 	@Input() value: string;
 
 	@Output() onChange = new EventEmitter();
@@ -21,8 +24,6 @@ export class TestSelectorComponent implements OnChanges {
 	get items(): Test[] {
 		return this._testService.tests;
 	}
-
-	constructor(private _testService: TestService) {}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['value'] && !changes['value'].firstChange) {

@@ -1,21 +1,26 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
 	Component,
 	EventEmitter,
 	Input,
 	OnInit,
 	Output,
-	TemplateRef
+	TemplateRef,
+	inject
 } from '@angular/core';
+import { FormService } from '../form.service';
 import { FormComponentInterface } from '../interfaces/component.interface';
 import { FormInterface } from '../interfaces/form.interface';
-import { FormService } from '../form.service';
 
 @Component({
 	selector: 'form-component',
 	templateUrl: './form-component.component.html',
-	styleUrls: ['./form-component.component.scss']
+	styleUrls: ['./form-component.component.scss'],
+	imports: [NgTemplateOutlet]
 })
 export class FormComponentComponent implements OnInit {
+	private _form = inject(FormService);
+
 	@Input() index: string;
 
 	@Input() config: FormInterface;
@@ -58,14 +63,10 @@ export class FormComponentComponent implements OnInit {
 
 	localSubmition: Record<string, unknown>;
 
-	constructor(private _form: FormService) {}
-
 	ngOnInit(): void {
-		if (Array.isArray(this.component.fields)) {
-			for (const field of this.component.fields) {
-				this.field[field.name] = field.value;
-			}
-		}
+		this.component.resetFields = this._resetFields.bind(this);
+
+		this._resetFields();
 
 		this.localSubmition = this.submition;
 
@@ -96,9 +97,8 @@ export class FormComponentComponent implements OnInit {
 					this.localSubmition[key] as Record<string, unknown>[]
 				)[index];
 			} else {
-				this.localSubmition = this.localSubmition[
-					this.localKey
-				] as Record<string, unknown>;
+				this.localSubmition =
+					(this.localSubmition[key] as Record<string, unknown>) || {};
 			}
 		}
 
@@ -134,5 +134,13 @@ export class FormComponentComponent implements OnInit {
 		}
 
 		return -1;
+	}
+
+	private _resetFields() {
+		if (Array.isArray(this.component.fields)) {
+			for (const field of this.component.fields) {
+				this.field[field.name] = field.value;
+			}
+		}
 	}
 }

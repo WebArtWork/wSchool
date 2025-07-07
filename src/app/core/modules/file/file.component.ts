@@ -1,7 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgClass, NgStyle } from '@angular/common';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	SimpleChanges,
+	inject
+} from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { HttpService, ModalService } from 'wacom';
-import { FileService } from './file.service';
 import { FileCropperComponent } from './file-cropper/file-cropper.component';
+import { FileService } from './file.service';
 
 /**
  * The FileComponent is responsible for handling file uploads, primarily images,
@@ -11,9 +22,16 @@ import { FileCropperComponent } from './file-cropper/file-cropper.component';
 @Component({
 	selector: 'ngx-file',
 	templateUrl: './file.component.html',
-	styleUrls: ['./file.component.scss']
+	styleUrls: ['./file.component.scss'],
+	imports: [NgClass, NgStyle]
 })
-export class FileComponent implements OnInit {
+export class FileComponent implements OnInit, OnChanges {
+	private _modal = inject(ModalService);
+	private _http = inject(HttpService);
+	private _fs = inject(FileService);
+
+	readonly url = environment.url;
+
 	/**
 	 * The container where the file will be stored (default: 'general').
 	 */
@@ -96,16 +114,19 @@ export class FileComponent implements OnInit {
 		return this.value as string[];
 	}
 
-	constructor(
-		private _modal: ModalService,
-		private _http: HttpService,
-		private _fs: FileService
-	) {}
-
 	ngOnInit(): void {
 		if (!this.name && !this.multiple && this.value) {
 			const paths = ((this.value as string) || '').split('/');
+
 			this.name = paths[paths.length - 1].split('?')[0];
+		}
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['value']) {
+			this.value = changes['value'].currentValue;
+
+			this.force = '';
 		}
 	}
 
@@ -113,7 +134,7 @@ export class FileComponent implements OnInit {
 	 * Initiates the file selection and cropping process.
 	 */
 	set(): void {
-		this._fs.setFile = (dataUrl: string) => {
+		this._fs.setFile = (dataUrl: string): void => {
 			if (this.width && this.height) {
 				this._modal.show({
 					uploadImage: this.uploadImage.bind(this),
@@ -133,14 +154,16 @@ export class FileComponent implements OnInit {
 	 * @param dataUrl The data URL of the image.
 	 */
 	uploadImage(dataUrl: string): void {
+		const name = (this.name || '').includes('logo.png') ? '' : this.name;
+
 		this._http.post(
 			'/api/file/photo',
 			{
 				container: this.container,
-				name: this.name,
+				name,
 				dataUrl
 			},
-			(url) => {
+			(url: string) => {
 				if (this.multiple) {
 					if (!this.value) {
 						this.value = [];
@@ -149,6 +172,7 @@ export class FileComponent implements OnInit {
 					(this.value as string[]).push(url);
 				} else {
 					this.name = url.split('/')[5].split('?')[0];
+
 					this.value = url;
 				}
 

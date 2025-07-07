@@ -1,0 +1,7 @@
+<wtable title="Levels" [columns]="columns" [config]="config" [rows]="rows">
+	<ng-template cell="require" let-element>
+		<ng-container *ngIf="element.knowledge">
+			{{sks.doc(element.knowledge).title}}
+		</ng-container>
+	</ng-template>
+</wtable>

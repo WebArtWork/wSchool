@@ -3,18 +3,24 @@ import {
 	Component,
 	EventEmitter,
 	Input,
-	Output
+	Output,
+	inject
 } from '@angular/core';
+import { CoreService } from 'wacom';
 import { FormComponentInterface } from './interfaces/component.interface';
 import { FormInterface } from './interfaces/form.interface';
-import { CoreService } from 'wacom';
+
+import { FormComponentComponent } from './form-component/form-component.component';
 
 @Component({
 	selector: 'wform',
 	templateUrl: './form.component.html',
-	styleUrls: ['./form.component.scss']
+	styleUrls: ['./form.component.scss'],
+	imports: [FormComponentComponent]
 })
 export class FormComponent implements AfterViewInit {
+	private _core = inject(CoreService);
+
 	@Input() config: FormInterface;
 
 	@Input() submition: Record<string, unknown> = {};
@@ -22,8 +28,6 @@ export class FormComponent implements AfterViewInit {
 	@Output() wChange = new EventEmitter();
 
 	@Output() wSubmit = new EventEmitter();
-
-	constructor(private _core: CoreService) {}
 
 	ngAfterViewInit(): void {
 		this.submition['data'] = this.submition['data'] || {};

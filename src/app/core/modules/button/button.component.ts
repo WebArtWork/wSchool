@@ -1,22 +1,16 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 /**
- * ButtonComponent is a reusable button component that supports various styles
- * and types, such as primary, secondary, success, danger, and more. It also supports
- * disabled states and custom click events.
+ * ButtonComponent is a reusable Angular component for buttons.
+ * It supports multiple styles, custom classes, disabled states,
+ * and emits events when clicked.
  */
 @Component({
 	selector: 'wbutton',
-	templateUrl: './button.component.html',
-	styleUrls: ['./button.component.scss']
+	templateUrl: './button.component.html'
 })
 export class ButtonComponent {
-	/**
-	 * The type of button.
-	 * Options include: primary, secondary, success, danger, warning, info, light, dark, link.
-	 * Default is 'primary'.
-	 */
-	@Input() type:
+	readonly type = input<
 		| 'primary'
 		| 'secondary'
 		| 'success'
@@ -25,58 +19,54 @@ export class ButtonComponent {
 		| 'info'
 		| 'light'
 		| 'dark'
-		| 'link' = 'primary';
+		| 'link'
+	>('primary');
 
 	/**
-	 * Custom CSS classes to add to the button.
-	 * Default is an empty string.
+	 * Additional CSS classes for the button.
+	 * Default: ''.
 	 */
-	@Input() class = '';
+	readonly class = input<string>('');
 
 	/**
-	 * Whether the button is disabled.
-	 * Default is false.
+	 * Controls whether the button is disabled.
+	 * Default: false.
 	 */
-	@Input() disabled = false;
+	readonly disabled = input<boolean>(false);
 
 	/**
-	 * When true, the button will not submit the form even if placed inside a form.
-	 * Default is false.
+	 * Determines whether the button prevents form submission.
+	 * If true, the button does not submit the form when inside a form.
+	 * Default: false.
 	 */
-	@Input() disableSubmit = false;
+	readonly disableSubmit = input<boolean>(false);
 
 	/**
-	 * Custom function to handle click events.
-	 * If not provided, the button acts as a normal button.
+	 * Custom function executed when the button is clicked.
+	 * If undefined, the button behaves normally.
 	 */
-	@Input() click: (() => void) | undefined;
+	readonly click = input<(() => void) | undefined>(undefined);
 
 	/**
 	 * Event emitted when the button is clicked.
 	 */
-	@Output() wClick = new EventEmitter<void>();
+	readonly wClick = output<void>();
 
 	/**
-	 * Method called when the button is clicked.
-	 * Emits the wClick event and calls the custom click function if provided.
+	 * Handles the click event.
+	 * If the button is disabled, the event is ignored.
+	 * Executes the custom click function if provided.
+	 * Emits the wClick event.
 	 */
 	clicked(): void {
-		if (this.disabled) {
+		if (this.disabled()) {
 			return;
 		}
 
-		if (typeof this.click === 'function') {
-			this.click();
+		if (typeof this.click() === 'function') {
+			this.click()?.();
 		}
 
 		this.wClick.emit();
-	}
-
-	/**
-	 * Sets the disabled state of the button.
-	 * @param disabled - Whether the button should be disabled.
-	 */
-	setDisabled(disabled: boolean): void {
-		this.disabled = disabled;
 	}
 }

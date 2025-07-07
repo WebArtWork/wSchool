@@ -1,19 +1,13 @@
-import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { Routes } from '@angular/router';
 // Core
-import { GuestComponent } from './core/theme/guest/guest.component';
-import { UserComponent } from './core/theme/user/user.component';
-import { AppComponent } from './app.component';
-import { CoreModule } from 'src/app/core/core.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 // config
-import { WacomModule, MetaGuard } from 'wacom';
-import { environment } from 'src/environments/environment';
+import { MetaGuard } from 'wacom';
+// guards
+import { AdminsGuard } from './core/guards/admins.guard';
 import { AuthenticatedGuard } from './core/guards/authenticated.guard';
 import { GuestGuard } from './core/guards/guest.guard';
-import { AdminsGuard } from './core/guards/admins.guard';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 const routes: Routes = [
 	{
@@ -24,35 +18,12 @@ const routes: Routes = [
 	{
 		path: '',
 		canActivate: [GuestGuard],
-		component: GuestComponent,
+		loadComponent: () =>
+			import('./core/theme/guest/guest.component').then(
+				(m) => m.GuestComponent
+			),
 		children: [
 			/* guest */
-			{
-				path: 'components',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'Components'
-					}
-				},
-				loadChildren: () =>
-					import('./pages/guest/components/components.module').then(
-						(m) => m.ComponentsModule
-					)
-			},
-			{
-				path: 'test',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'test'
-					}
-				},
-				loadChildren: () =>
-					import('./pages/guest/test/test.module').then(
-						(m) => m.TestModule
-					)
-			},
 			{
 				path: 'sign',
 				canActivate: [MetaGuard],
@@ -71,109 +42,77 @@ const routes: Routes = [
 	{
 		path: '',
 		canActivate: [AuthenticatedGuard],
-		component: UserComponent,
+		loadComponent: () =>
+			import('./core/theme/user/user.component').then(
+				(m) => m.UserComponent
+			),
 		children: [
 			/* user */
 			{
-				path: 'certificateProfile',
+				path: 'schools',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'CertificateProfile'
+						title: 'My schools'
 					}
 				},
-				loadChildren: () => import('./pages/user/certificate-profile/certificate-profile.module').then(m => m.CertificateProfileModule)
-			}, 
+				loadChildren: () =>
+					import(
+						'./modules/school/pages/schools/schools.module'
+					).then((m) => m.SchoolsModule)
+			},
 			{
-				path: 'certificatesProfile',
+				path: 'courses',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'CertificatesProfile'
+						title: 'My courses'
 					}
 				},
-				loadChildren: () => import('./pages/user/certificates-profile/certificates-profile.module').then(m => m.CertificatesProfileModule)
-			}, 
+				loadChildren: () =>
+					import(
+						'./modules/school/pages/courses/courses.module'
+					).then((m) => m.CoursesModule)
+			},
 			{
-				path: 'testProfile',
+				path: 'lessons',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'TestProfile'
+						title: 'My lessons'
 					}
 				},
-				loadChildren: () => import('./pages/user/test-profile/test-profile.module').then(m => m.TestProfileModule)
-			}, 
+				loadChildren: () =>
+					import(
+						'./modules/school/pages/lessons/lessons.routes'
+					).then((m) => m.lessonsRoutes)
+			},
 			{
-				path: 'lessonProfile',
+				path: 'tests',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'LessonProfile'
+						title: 'My tests'
 					}
 				},
-				loadChildren: () => import('./pages/user/lesson-profile/lesson-profile.module').then(m => m.LessonProfileModule)
-			}, 
+				loadChildren: () =>
+					import('./modules/school/pages/tests/tests.module').then(
+						(m) => m.TestsModule
+					)
+			},
 			{
-				path: 'courseProfile',
+				path: 'certificates',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'CourseProfile'
+						title: 'My certificates'
 					}
 				},
-				loadChildren: () => import('./pages/user/course-profile/course-profile.module').then(m => m.CourseProfileModule)
-			}, 
-			{
-				path: 'coursesProfile',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'CoursesProfile'
-					}
-				},
-				loadChildren: () => import('./pages/user/courses-profile/courses-profile.module').then(m => m.CoursesProfileModule)
-			}, 
-			{
-				path: 'schoolsProfile',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'SchoolsProfile'
-					}
-				},
-				loadChildren: () => import('./pages/user/schools-profile/schools-profile.module').then(m => m.SchoolsProfileModule)
-			}, 
-			{
-				path: 'dashboardStudent',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'DashboardStudent'
-					}
-				},
-				loadChildren: () => import('./pages/user/dashboard-student/dashboard-student.module').then(m => m.DashboardStudentModule)
-			}, 
-			{
-				path: 'dashboardTeacher',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'DashboardTeacher'
-					}
-				},
-				loadChildren: () => import('./pages/user/dashboard-teacher/dashboard-teacher.module').then(m => m.DashboardTeacherModule)
-			}, 
-			{
-				path: 'dashboardOwner',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'DashboardOwner'
-					}
-				},
-				loadChildren: () => import('./pages/user/dashboard-owner/dashboard-owner.module').then(m => m.DashboardOwnerModule)
-			}, 
+				loadChildren: () =>
+					import(
+						'./modules/school/pages/certificates/certificates.module'
+					).then((m) => m.CertificatesModule)
+			},
 			{
 				path: 'profile',
 				canActivate: [MetaGuard],
@@ -186,70 +125,41 @@ const routes: Routes = [
 					import('./pages/user/profile/profile.module').then(
 						(m) => m.ProfileModule
 					)
-			},
+			}
+		]
+	},
+	{
+		path: '',
+		loadComponent: () =>
+			import('./core/theme/public/public.component').then(
+				(m) => m.PublicComponent
+			),
+		children: [
+			/* user */
 			{
-				path: 'schools',
+				path: 'document',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Schools'
+						title: 'Document'
 					}
 				},
 				loadChildren: () =>
-					import('./modules/school/pages/schools/schools.module').then(
-						(m) => m.SchoolsModule
+					import('./pages/guest/document/document.module').then(
+						(m) => m.DocumentModule
 					)
 			},
 			{
-				path: 'courses',
+				path: 'components',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Courses'
+						title: 'Components'
 					}
 				},
 				loadChildren: () =>
-					import('./modules/schoolcourse/pages/courses/courses.module').then(
-						(m) => m.CoursesModule
-					)
-			},
-			{
-				path: 'lessons',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'Lessons'
-					}
-				},
-				loadChildren: () =>
-					import('./modules/schoollesson/pages/lessons/lessons.module').then(
-						(m) => m.LessonsModule
-					)
-			},
-			{
-				path: 'tests',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'Tests'
-					}
-				},
-				loadChildren: () =>
-					import('./modules/schooltest/pages/tests/tests.module').then(
-						(m) => m.TestsModule
-					)
-			},
-			{
-				path: 'certificates',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'Certificates'
-					}
-				},
-				loadChildren: () =>
-					import('./modules/schoolcertificate/pages/certificates/certificates.module').then(
-						(m) => m.CertificatesModule
+					import('./pages/guest/components/components.module').then(
+						(m) => m.ComponentsModule
 					)
 			}
 		]
@@ -257,7 +167,10 @@ const routes: Routes = [
 	{
 		path: 'admin',
 		canActivate: [AdminsGuard],
-		component: UserComponent,
+		loadComponent: () =>
+			import('./core/theme/user/user.component').then(
+				(m) => m.UserComponent
+			),
 		children: [
 			/* admin */
 			{
@@ -308,53 +221,5 @@ const routes: Routes = [
 	}
 ];
 
-@NgModule({
-	declarations: [AppComponent, GuestComponent, UserComponent],
-	imports: [
-		CoreModule,
-		BrowserModule,
-		BrowserAnimationsModule,
-		WacomModule.forRoot({
-			store: {},
-			http: {
-				url: environment.url
-			},
-			socket: environment.production,
-			meta: {
-				useTitleSuffix: true,
-				defaults: {
-					title: 'Web Art Work',
-					titleSuffix: ' | Web Art Work',
-					'og:image': 'https://webart.work/api/user/cdn/waw-logo.png'
-				}
-			},
-			modal: {
-				modals: {
-					/* modals */
-				}
-			},
-			alert: {
-				alerts: {
-					/* alerts */
-				}
-			},
-			loader: {
-				loaders: {
-					/* loaders */
-				}
-			},
-			popup: {
-				popups: {
-					/* popups */
-				}
-			}
-		}),
-		RouterModule.forRoot(routes, {
-			scrollPositionRestoration: 'enabled',
-			preloadingStrategy: PreloadAllModules
-		})
-	],
-	providers: [AuthenticatedGuard, GuestGuard, AdminsGuard, { provide: LocationStrategy, useClass: HashLocationStrategy }],
-	bootstrap: [AppComponent]
-})
+@NgModule()
 export class AppModule {}
