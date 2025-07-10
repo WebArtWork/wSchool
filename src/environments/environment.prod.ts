@@ -2,7 +2,7 @@ export const environment = {
 	roles: [],
 	production: true,
 	appId: 'test',
-	url: 'https://webart.work',
+	url: '',
 	sign: {
 		logo: '',
 		email: '',

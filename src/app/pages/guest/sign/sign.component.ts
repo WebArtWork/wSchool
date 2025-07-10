@@ -1,15 +1,12 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormService } from 'src/app/core/modules/form/form.service';
-import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
-import { User } from 'src/app/modules/user/interfaces/user.interface';
-import { UserService } from 'src/app/modules/user/services/user.service';
-import { environment } from 'src/environments/environment';
+import { Component } from '@angular/core';
 import { AlertService, HashService, HttpService, UiService } from 'wacom';
-
-import { SpiderComponent } from '../../../core/icons/spider/spider.component';
-import { FormComponent } from '../../../core/modules/form/form.component';
+import { Router } from '@angular/router';
+import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
+import { FormService } from 'src/app/core/modules/form/form.service';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
+import { UserService } from 'src/app/modules/user/services/user.service';
+import { User } from 'src/app/modules/user/interfaces/user.interface';
+import { environment } from 'src/environments/environment';
 
 interface RespStatus {
 	email: string;
@@ -19,18 +16,9 @@ interface RespStatus {
 @Component({
 	templateUrl: './sign.component.html',
 	styleUrls: ['./sign.component.scss'],
-	imports: [SpiderComponent, FormComponent]
+	standalone: false
 })
 export class SignComponent {
-	userService = inject(UserService);
-	ui = inject(UiService);
-	private _alert = inject(AlertService);
-	private _http = inject(HttpService);
-	private _hash = inject(HashService);
-	private _router = inject(Router);
-	private _form = inject(FormService);
-	private _translate = inject(TranslateService);
-
 	readonly logo = environment.sign.logo;
 
 	form: FormInterface = this._form.getForm('sign', {
@@ -110,6 +98,17 @@ export class SignComponent {
 		password: environment.sign.password,
 		resetPin: null
 	};
+
+	constructor(
+		public userService: UserService,
+		public ui: UiService,
+		private _alert: AlertService,
+		private _http: HttpService,
+		private _hash: HashService,
+		private _router: Router,
+		private _form: FormService,
+		private _translate: TranslateService
+	) {}
 
 	submit(): void {
 		if (!this.form.components[2].hidden && this.user.resetPin) {

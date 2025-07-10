@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CoreService, HttpService, StoreService } from 'wacom';
 import { languages } from './languages';
@@ -22,10 +22,6 @@ export interface Word {
 	providedIn: 'root'
 })
 export class TranslateService {
-	private _store = inject(StoreService);
-	private _http = inject(HttpService);
-	private _core = inject(CoreService);
-
 	readonly allLanguages = languages;
 
 	readonly appId = (environment as unknown as { appId: string }).appId;
@@ -68,15 +64,14 @@ export class TranslateService {
 				origin: 'English'
 		  };
 
-	/** Inserted by Angular inject() migration for backwards compatibility */
-	constructor(...args: unknown[]);
-
-	constructor() {
-		this._store.getJson('translates', (translates) => {
+	constructor(
+		private store: StoreService,
+		private http: HttpService,
+		private _core: CoreService
+	) {
+		this.store.getJson('translates', (translates) => {
 			if (translates) {
 				this.translates = translates || {};
-
-				this._core.complete('translate');
 			}
 		});
 
@@ -84,37 +79,34 @@ export class TranslateService {
 			this.languages = languages;
 		});
 
-		this._store.getJson('words', (words) => {
+		this.store.getJson('words', (words) => {
 			if (words) {
 				this.words = words;
 			}
 		});
 
-		this._store.getJson('language', (language: Language) => {
+		this.store.getJson('language', (language: Language) => {
 			if (language) {
 				this.set_language(language);
 			}
 		});
 
-		this._http.get(
+		this.http.get(
 			'/api/translate/get' + (this.appId ? '/' + this.appId : ''),
 			(obj) => {
 				if (obj) {
 					this.translates = obj;
-
-					this._core.complete('translate');
-
-					this._store.setJson('translates', this.translates);
+					this.store.setJson('translates', this.translates);
 				}
 			}
 		);
 
-		this._http.get(
+		this.http.get(
 			'/api/word/get' + (this.appId ? '/' + this.appId : ''),
 			(arr) => {
 				if (arr) {
 					this.words = arr;
-					this._store.setJson('words', this.words);
+					this.store.setJson('words', this.words);
 					for (let i = 0; i < arr.length; i++) {
 						if (this.pages.indexOf(arr[i].page) < 0) {
 							this.pages.push(arr[i].page);
@@ -135,14 +127,14 @@ export class TranslateService {
 			if (this.words[i]._id == word._id) this.words.splice(i, 1);
 		}
 
-		this._http.post(
+		this.http.post(
 			'/api/word/delete' + (this.appId ? '/' + this.appId : ''),
 			{
 				_id: word._id
 			}
 		);
 
-		this._http.post(
+		this.http.post(
 			'/api/translate/delete' + (this.appId ? '/' + this.appId : ''),
 			{
 				slug: word.slug
@@ -156,7 +148,7 @@ export class TranslateService {
 	 */
 	set_language(language: Language) {
 		if (language) {
-			this._http.post('/api/translate/set', {
+			this.http.post('/api/translate/set', {
 				appId: this.appId,
 				language: language.code
 			});
@@ -165,7 +157,7 @@ export class TranslateService {
 
 			this.reset();
 
-			this._store.setJson('language', language);
+			this.store.setJson('language', language);
 		}
 	}
 
@@ -184,7 +176,7 @@ export class TranslateService {
 			}
 		}
 
-		this._store.setJson('language', this.language);
+		this.store.setJson('language', this.language);
 	}
 
 	// Dictionary of translations
@@ -270,7 +262,7 @@ export class TranslateService {
 		if (this._wordsLoaded) {
 			this._created[slug] = true;
 
-			this._http.post(
+			this.http.post(
 				'/api/word/create',
 				{
 					appId: this.appId,
@@ -300,14 +292,14 @@ export class TranslateService {
 	 */
 	update_translate(slug: string, languageCode: string, translate: string) {
 		this._core.afterWhile(this, () => {
-			this._http.post('/api/translate/create', {
+			this.http.post('/api/translate/create', {
 				appId: this.appId,
 				slug,
 				translate,
 				lang: languageCode
 			});
 
-			this._store.setJson('translates', this.translates);
+			this.store.setJson('translates', this.translates);
 
 			if (
 				this.language.code === languageCode &&
@@ -326,7 +318,7 @@ export class TranslateService {
 	 * Downloads the translations as a JSON file.
 	 */
 	download_json() {
-		this._http.get('/api/translate/get_translates', (obj) => {
+		this.http.get('/api/translate/get_translates', (obj) => {
 			const dataStr =
 				'data:text/json;charset=utf-8,' +
 				encodeURIComponent(JSON.stringify(this.translates));

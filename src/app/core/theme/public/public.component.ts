@@ -1,13 +1,12 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 import { UserService } from 'src/app/modules/user/services/user.service';
 
 @Component({
 	selector: 'app-public',
+	standalone: false,
 	templateUrl: './public.component.html',
-	styleUrl: './public.component.scss',
-	imports: [RouterLinkActive, RouterLink, RouterOutlet]
+	styleUrl: './public.component.scss'
 })
 export class PublicComponent {
-	us = inject(UserService);
+	constructor(public us: UserService) {}
 }

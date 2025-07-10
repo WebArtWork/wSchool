@@ -1,9 +1,12 @@
-import { Pipe, PipeTransform, inject } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from './translate.service';
 
-@Pipe({ name: 'translate' })
+@Pipe({
+	name: 'translate',
+	standalone: false
+})
 export class TranslatePipe implements PipeTransform {
-	private _tr = inject(TranslateService);
+	constructor(private _tr: TranslateService) {}
 
 	/**
 	 * Transforms the given slug into its corresponding translated string.

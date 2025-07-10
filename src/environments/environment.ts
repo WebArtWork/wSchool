@@ -5,7 +5,6 @@ import { environment as environmentProd } from './environment.prod';
 
 export const environment = {
 	...environmentProd,
-	url: '',
 	sign: {
 		logo: '',
 		email: 'ceo@webart.work',

@@ -1,19 +1,15 @@
-import { NgClass } from '@angular/common';
 import {
 	Component,
-	ElementRef,
-	EventEmitter,
 	Input,
-	OnChanges,
-	OnInit,
 	Output,
-	SimpleChanges,
+	EventEmitter,
+	OnInit,
+	ElementRef,
 	ViewChild,
-	inject
+	OnChanges,
+	SimpleChanges
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CoreService } from 'wacom';
-import { TranslatePipe } from '../translate/translate.pipe';
 
 export type Value =
 	| null
@@ -33,11 +29,9 @@ export type Value =
 	selector: 'winput',
 	templateUrl: './input.component.html',
 	styleUrls: ['./input.component.scss'],
-	imports: [FormsModule, NgClass, TranslatePipe]
+	standalone: false
 })
 export class InputComponent implements OnInit, OnChanges {
-	private _core = inject(CoreService);
-
 	/**
 	 * The value of the input field.
 	 */
@@ -145,6 +139,10 @@ export class InputComponent implements OnInit, OnChanges {
 	 * Error state of the input field, set to true if validation fails.
 	 */
 	error = false;
+
+	inputFocused = false;
+
+	constructor(private _core: CoreService) {}
 
 	/**
 	 * Initializes the component. Focuses the input field if the focused input is true.

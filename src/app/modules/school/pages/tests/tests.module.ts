@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from 'src/app/core/core.module';
-import { ButtonComponent } from 'src/app/core/modules/button/button.component';
-import { FormComponent } from 'src/app/core/modules/form/form.component';
-import { TableComponent } from 'src/app/core/modules/table/table.component';
-import { TestQuestionsComponent } from './test-questions/test-questions.component';
 import { TestsComponent } from './tests.component';
+import { Routes, RouterModule } from '@angular/router';
+import { TestQuestionsComponent } from './test-questions/test-questions.component';
 
 const routes: Routes = [
 	{
@@ -27,13 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [
-		RouterModule.forChild(routes),
-		CoreModule,
-		TableComponent,
-		FormComponent,
-		ButtonComponent
-	],
+	imports: [RouterModule.forChild(routes), CoreModule],
 	declarations: [TestsComponent, TestQuestionsComponent],
 	providers: []
 })

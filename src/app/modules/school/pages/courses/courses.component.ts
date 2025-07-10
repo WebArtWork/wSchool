@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { FormService } from 'src/app/core/modules/form/form.service';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
 import { TranslateService } from 'src/app/core/modules/translate/translate.service';
+import { Schoolknowledge } from 'src/app/modules/school/interfaces/schoolknowledge.interface';
+import { SchoolknowledgeService } from 'src/app/modules/school/services/schoolknowledge.service';
 import { UserService } from 'src/app/modules/user/services/user.service';
 import { AlertService, CoreService } from 'wacom';
 import { schoolcourseFormComponents } from '../../formcomponents/schoolcourse.formcomponents';
 import { Schoolcourse } from '../../interfaces/schoolcourse.interface';
-import { Schoolknowledge } from '../../interfaces/schoolknowledge.interface';
 import { SchoolcourseService } from '../../services/schoolcourse.service';
-import { SchoolknowledgeService } from '../../services/schoolknowledge.service';
 
 @Component({
 	templateUrl: './courses.component.html',

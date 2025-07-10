@@ -1,24 +1,19 @@
-import { Injectable, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { Injectable } from '@angular/core';
 import {
 	AlertService,
 	CoreService,
-	CrudService,
 	HttpService,
-	StoreService
+	StoreService,
+	CrudService
 } from 'wacom';
 import { User } from '../interfaces/user.interface';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
+
 @Injectable({
 	providedIn: 'root'
 })
 export class UserService extends CrudService<User> {
-	private _http = inject(HttpService);
-	private _store = inject(StoreService);
-	private _alert = inject(AlertService);
-	private _core = inject(CoreService);
-	private _router = inject(Router);
-
 	readonly url = environment.url;
 
 	get thumb(): string {
@@ -48,10 +43,13 @@ export class UserService extends CrudService<User> {
 
 	usersByRole: Record<string, User[]> = {};
 
-	/** Inserted by Angular inject() migration for backwards compatibility */
-	constructor(...args: unknown[]);
-
-	constructor() {
+	constructor(
+		private _http: HttpService,
+		private _store: StoreService,
+		private _alert: AlertService,
+		private _core: CoreService,
+		private _router: Router
+	) {
 		super({
 			name: 'user',
 			replace: (user) => {
@@ -77,7 +75,7 @@ export class UserService extends CrudService<User> {
 
 		this.filteredDocuments(this.usersByRole, 'roles');
 
-		this.fetch({}, { name: 'me' }).subscribe((user: User) => {
+		this.fetch({}, { name: 'me' }).subscribe((user) => {
 			if (user) {
 				if (
 					!localStorage.getItem('waw_user') &&

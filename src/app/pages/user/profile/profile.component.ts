@@ -1,13 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { FormService } from 'src/app/core/modules/form/form.service';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
 import { UserService } from 'src/app/modules/user/services/user.service';
+import { User } from 'src/app/modules/user/interfaces/user.interface';
+import { FormService } from 'src/app/core/modules/form/form.service';
 import { environment } from 'src/environments/environment';
+import { Component } from '@angular/core';
 import { CoreService } from 'wacom';
-import { ButtonComponent } from '../../../core/modules/button/button.component';
-import { FileComponent } from '../../../core/modules/file/file.component';
-import { FormComponent } from '../../../core/modules/form/form.component';
-import { TranslateDirective } from '../../../core/modules/translate/translate.directive';
 
 interface ChangePassword {
 	oldPass: string;
@@ -18,19 +15,16 @@ interface ChangePassword {
 	selector: 'app-profile',
 	templateUrl: './profile.component.html',
 	styleUrls: ['./profile.component.scss'],
-	imports: [FileComponent, FormComponent, ButtonComponent, TranslateDirective]
+	standalone: false
 })
 export class ProfileComponent {
-	private _form = inject(FormService);
-	private _core = inject(CoreService);
-	us = inject(UserService);
-
 	readonly url = environment.url;
 
-	/** Inserted by Angular inject() migration for backwards compatibility */
-	constructor(...args: unknown[]);
-
-	constructor() {
+	constructor(
+		private _form: FormService,
+		private _core: CoreService,
+		public us: UserService
+	) {
 		this._core.onComplete('us.user').then(() => {
 			const user = {};
 

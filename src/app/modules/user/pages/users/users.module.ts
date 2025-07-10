@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from 'src/app/core/core.module';
-
-import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './users.component';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
 	{
 		path: '',
-		loadComponent: () =>
-			import('./users.component').then((m) => m.UsersComponent)
+		component: UsersComponent
 	}
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(routes), CoreModule, UsersComponent],
+	imports: [RouterModule.forChild(routes), CoreModule],
+	declarations: [UsersComponent],
 	providers: []
 })
 export class UsersModule {}

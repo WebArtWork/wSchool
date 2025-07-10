@@ -1,26 +1,22 @@
-import { NgTemplateOutlet } from '@angular/common';
 import {
 	Component,
 	EventEmitter,
 	Input,
 	OnInit,
 	Output,
-	TemplateRef,
-	inject
+	TemplateRef
 } from '@angular/core';
-import { FormService } from '../form.service';
 import { FormComponentInterface } from '../interfaces/component.interface';
 import { FormInterface } from '../interfaces/form.interface';
+import { FormService } from '../form.service';
 
 @Component({
 	selector: 'form-component',
 	templateUrl: './form-component.component.html',
 	styleUrls: ['./form-component.component.scss'],
-	imports: [NgTemplateOutlet]
+	standalone: false
 })
 export class FormComponentComponent implements OnInit {
-	private _form = inject(FormService);
-
 	@Input() index: string;
 
 	@Input() config: FormInterface;
@@ -62,6 +58,8 @@ export class FormComponentComponent implements OnInit {
 	localKey: string;
 
 	localSubmition: Record<string, unknown>;
+
+	constructor(private _form: FormService) {}
 
 	ngOnInit(): void {
 		this.component.resetFields = this._resetFields.bind(this);

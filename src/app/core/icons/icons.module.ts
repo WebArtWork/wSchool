@@ -8,7 +8,7 @@ const icons = [
 ];
 
 @NgModule({
-    imports: [...icons],
-    exports: icons
+	declarations: icons,
+	exports: icons
 })
 export class IconsModule {}

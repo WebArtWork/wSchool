@@ -1,4 +1,11 @@
-import { Component, input, output } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	Output,
+	SimpleChanges
+} from '@angular/core';
 
 /**
  * ButtonComponent is a reusable Angular component for buttons.
@@ -7,10 +14,17 @@ import { Component, input, output } from '@angular/core';
  */
 @Component({
 	selector: 'wbutton',
-	templateUrl: './button.component.html'
+	templateUrl: './button.component.html',
+	styleUrls: ['./button.component.scss'],
+	standalone: false
 })
-export class ButtonComponent {
-	readonly type = input<
+export class ButtonComponent implements OnChanges {
+	/**
+	 * Defines the button style.
+	 * Available options: 'primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'link'.
+	 * Default: 'primary'.
+	 */
+	@Input() type:
 		| 'primary'
 		| 'secondary'
 		| 'success'
@@ -19,38 +33,37 @@ export class ButtonComponent {
 		| 'info'
 		| 'light'
 		| 'dark'
-		| 'link'
-	>('primary');
+		| 'link' = 'primary';
 
 	/**
 	 * Additional CSS classes for the button.
 	 * Default: ''.
 	 */
-	readonly class = input<string>('');
+	@Input() class = '';
 
 	/**
 	 * Controls whether the button is disabled.
 	 * Default: false.
 	 */
-	readonly disabled = input<boolean>(false);
+	@Input() disabled = false;
 
 	/**
 	 * Determines whether the button prevents form submission.
 	 * If true, the button does not submit the form when inside a form.
 	 * Default: false.
 	 */
-	readonly disableSubmit = input<boolean>(false);
+	@Input() disableSubmit = false;
 
 	/**
 	 * Custom function executed when the button is clicked.
 	 * If undefined, the button behaves normally.
 	 */
-	readonly click = input<(() => void) | undefined>(undefined);
+	@Input() click: (() => void) | undefined;
 
 	/**
 	 * Event emitted when the button is clicked.
 	 */
-	readonly wClick = output<void>();
+	@Output() wClick = new EventEmitter<void>();
 
 	/**
 	 * Handles the click event.
@@ -59,14 +72,44 @@ export class ButtonComponent {
 	 * Emits the wClick event.
 	 */
 	clicked(): void {
-		if (this.disabled()) {
+		if (this.disabled) {
 			return;
 		}
 
-		if (typeof this.click() === 'function') {
-			this.click()?.();
+		if (typeof this.click === 'function') {
+			this.click();
 		}
 
 		this.wClick.emit();
+	}
+
+	/**
+	 * Updates the disabled state of the button.
+	 * @param disabled - A boolean indicating whether the button should be disabled.
+	 */
+	setDisabled(disabled: boolean): void {
+		this.disabled = disabled;
+	}
+
+	/**
+	 * Detects input changes and updates properties accordingly.
+	 * @param changes - A collection of changed input properties.
+	 */
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['disabled']) {
+			this.disabled = changes['disabled'].currentValue;
+		}
+
+		if (changes['class']) {
+			this.class = changes['class'].currentValue;
+		}
+
+		if (changes['type']) {
+			this.type = changes['type'].currentValue;
+		}
+
+		if (changes['disableSubmit']) {
+			this.disableSubmit = changes['disableSubmit'].currentValue;
+		}
 	}
 }

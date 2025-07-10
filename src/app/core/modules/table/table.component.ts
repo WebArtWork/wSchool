@@ -1,28 +1,22 @@
-import { NgTemplateOutlet } from '@angular/common';
 import {
-	AfterContentInit,
 	Component,
-	ContentChild,
-	ContentChildren,
-	EventEmitter,
-	inject,
 	Input,
+	ContentChildren,
 	OnInit,
 	Output,
-	QueryList
+	QueryList,
+	AfterContentInit,
+	EventEmitter,
+	ContentChild
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { StoreService, WacomModule } from 'wacom';
-import { ButtonComponent } from '../button/button.component';
-import { TranslateDirective } from '../translate/translate.directive';
-import { PerPagePipe } from './per-page.pipe';
 import {
-	ActionsDirective,
 	CellDirective,
-	CustomEditDirective,
-	SortDirective
+	SortDirective,
+	ActionsDirective,
+	CustomEditDirective
 } from './table.directive';
+import { Router } from '@angular/router';
+import { StoreService } from 'wacom';
 
 /**
  * TableComponent is a reusable component for displaying data in a table format with
@@ -32,19 +26,10 @@ import {
 	selector: 'wtable',
 	templateUrl: './table.component.html',
 	styleUrls: ['./table.component.scss'],
-	imports: [
-		FormsModule,
-		ButtonComponent,
-		TranslateDirective,
-		NgTemplateOutlet,
-		RouterLink,
-		WacomModule,
-		PerPagePipe
-	]
+	standalone: false
 })
 export class TableComponent implements OnInit, AfterContentInit {
-	private _router = inject(Router);
-	private _store = inject(StoreService);
+	constructor(private _router: Router, private _store: StoreService) {}
 
 	/** A unique ID for the table based on the current route. */
 	tableId =

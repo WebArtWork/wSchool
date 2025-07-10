@@ -1,10 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { CoreService, WacomModule } from 'wacom';
-import { TranslateService } from '../translate/translate.service';
-import { NgTemplateOutlet } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { TranslateDirective } from '../translate/translate.directive';
-import { TranslatePipe } from '../translate/translate.pipe';
+import {
+	Component,
+	ElementRef,
+	Input,
+	TemplateRef,
+	ViewChild,
+	Output,
+	EventEmitter,
+	OnInit,
+	OnChanges,
+	SimpleChanges
+} from '@angular/core';
 
 /**
  * The SelectComponent is a customizable select dropdown component that supports
@@ -12,15 +17,12 @@ import { TranslatePipe } from '../translate/translate.pipe';
  * and items.
  */
 @Component({
-    selector: 'wselect',
-    templateUrl: './select.component.html',
-    styleUrls: ['./select.component.scss'],
-    imports: [WacomModule, NgTemplateOutlet, FormsModule, TranslateDirective, TranslatePipe]
+	selector: 'wselect',
+	templateUrl: './select.component.html',
+	styleUrls: ['./select.component.scss'],
+	standalone: false
 })
 export class SelectComponent implements OnInit, OnChanges {
-	private _core = inject(CoreService);
-	private _translate = inject(TranslateService);
-
 	/** Placeholder text for the select input. */
 	@Input() placeholder = '';
 
@@ -89,23 +91,34 @@ export class SelectComponent implements OnInit, OnChanges {
 	/** Custom template for the search input. */
 	@Input('search') t_search: TemplateRef<any>;
 
-	@ViewChild('e_search', { static: false }) e_search: ElementRef;
-
 	search = '';
 
-	/** Inserted by Angular inject() migration for backwards compatibility */
-	constructor(...args: unknown[]);
-
-	constructor() {
-
-	}
+	@ViewChild('e_search', { static: false }) e_search: ElementRef;
 
 	ngOnInit(): void {
-		this._prepareItems();
+		for (let i = 0; i < this.items.length; i++) {
+			if (typeof this.items[i] === 'string') {
+				this.items[i] = {
+					name: this.items[i]
+				};
 
-		this._core.onComplete('translate').then(()=>{
-			this._prepareItems();
-		})
+				this.items[i][this.value] = this.items[i].name;
+			}
+
+			this._items[this.items[i][this.value]] = this.items[i];
+		}
+
+		if (this.multiple) {
+			this._values = (this.select || []).filter((value: any) => {
+				return !!this.items.find(
+					(item: any) => item[this.value] === value
+				);
+			});
+		} else {
+			this._selected = this._items[this.select]
+				? this._items[this.select][this.name]
+				: this.select;
+		}
 	}
 
 	showOptions() {
@@ -117,8 +130,8 @@ export class SelectComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['select'] && !changes['select'].firstChange || changes['items']) {
-			this._prepareItems();
+		if (changes['select'] && !changes['select'].firstChange) {
+			this.ngOnInit();
 		}
 
 		if (changes['disabled'] && !changes['disabled'].firstChange) {
@@ -166,36 +179,6 @@ export class SelectComponent implements OnInit, OnChanges {
 			this.e_search.nativeElement.focus();
 		} else {
 			setTimeout(this.focus_search.bind(this), 100);
-		}
-	}
-
-	private _prepareItems() {
-		for (let i = 0; i < this.items.length; i++) {
-			if (typeof this.items[i] === 'string') {
-				this.items[i] = {
-					name: this.items[i]
-				};
-
-				this.items[i][this.value] = this.items[i].name;
-			}
-
-			this.items[i].__search = this.searchableBy.split(' ').map(field => {
-				return this._translate.translate('Select.'+this.items[i][field] || '');
-			}).join('');
-
-			this._items[this.items[i][this.value]] = this.items[i];
-		}
-
-		if (this.multiple) {
-			this._values = (this.select || []).filter((value: any) => {
-				return !!this.items.find(
-					(item: any) => item[this.value] === value
-				);
-			});
-		} else {
-			this._selected = this._items[this.select]
-				? this._items[this.select][this.name]
-				: this.select;
 		}
 	}
 }

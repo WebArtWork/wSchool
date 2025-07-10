@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from 'src/app/core/core.module';
-import { TableComponent } from 'src/app/core/modules/table/table.component';
 import { CertificatesComponent } from './certificates.component';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
 	{
@@ -24,7 +23,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(routes), CoreModule, TableComponent],
+	imports: [RouterModule.forChild(routes), CoreModule],
 	declarations: [CertificatesComponent],
 	providers: []
 })

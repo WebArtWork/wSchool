@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormService } from 'src/app/core/modules/form/form.service';
-import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
-import { UserService } from 'src/app/modules/user/services/user.service';
 import { AlertService, CoreService } from 'wacom';
-import { schoolcertificateFormComponents } from '../../formcomponents/schoolcertificate.formcomponents';
-import { Schoolcertificate } from '../../interfaces/schoolcertificate.interface';
 import { SchoolcertificateService } from '../../services/schoolcertificate.service';
+import { Schoolcertificate } from '../../interfaces/schoolcertificate.interface';
+import { FormService } from 'src/app/core/modules/form/form.service';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
+import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
+import { schoolcertificateFormComponents } from '../../formcomponents/schoolcertificate.formcomponents';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/modules/user/services/user.service';
 
 @Component({
 	templateUrl: './certificates.component.html',
@@ -91,7 +91,7 @@ export class CertificatesComponent {
 								doc
 							);
 						}
-					}
+				  }
 				: null
 		]
 		// headerButtons: [
@@ -112,7 +112,7 @@ export class CertificatesComponent {
 		return this.moduleId
 			? this._schoolcertificateService.schoolcertificatesByModuleId[
 					this.moduleId
-				]
+			  ]
 			: this._schoolcertificateService.schoolcertificates;
 	}
 

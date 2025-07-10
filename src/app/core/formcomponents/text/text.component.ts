@@ -1,26 +1,18 @@
-import { NgClass } from '@angular/common';
-import {
-	Component,
-	OnInit,
-	TemplateRef,
-	ViewChild,
-	inject
-} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormService } from '../../modules/form/form.service';
-import { InputComponent } from '../../modules/input/input.component';
 
 interface Interface {}
 
 @Component({
 	templateUrl: './text.component.html',
 	styleUrls: ['./text.component.scss'],
-	imports: [InputComponent, NgClass]
+	standalone: false
 })
 export class TextComponent implements OnInit {
-	private _form = inject(FormService);
-
 	@ViewChild('templateRef', { static: true })
 	templateRef: TemplateRef<Interface>;
+
+	constructor(private _form: FormService) {}
 
 	ngOnInit(): void {
 		this._form.addTemplateComponent<Interface>('Text', this.templateRef);

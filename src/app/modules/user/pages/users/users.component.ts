@@ -1,30 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormService } from 'src/app/core/modules/form/form.service';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
 import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { AlertService, CoreService } from 'wacom';
 import { User } from '../../interfaces/user.interface';
 import { UserService } from '../../services/user.service';
-import { userFormComponents } from '../../formcomponents/user.formcomponents';
-import { TableComponent } from '../../../../core/modules/table/table.component';
-
-import { CellDirective } from '../../../../core/modules/table/table.directive';
-import { InputComponent } from '../../../../core/modules/input/input.component';
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
-    styleUrls: ['./users.component.scss'],
-    imports: [TableComponent, CellDirective, InputComponent]
+	selector: 'app-users',
+	templateUrl: './users.component.html',
+	styleUrls: ['./users.component.scss'],
+	standalone: false
 })
 export class UsersComponent {
-	private _translate = inject(TranslateService);
-	private _alert = inject(AlertService);
-	private _form = inject(FormService);
-	private _core = inject(CoreService);
-	private _us = inject(UserService);
-
-	form: FormInterface = this._form.prepareForm(userFormComponents);
+	form: FormInterface = this._form.getForm('user');
 
 	config = {
 		create: (): void => {
@@ -97,10 +86,13 @@ export class UsersComponent {
 		return this._us.users;
 	}
 
-	/** Inserted by Angular inject() migration for backwards compatibility */
-	constructor(...args: unknown[]);
-
-	constructor() {
+	constructor(
+		private _translate: TranslateService,
+		private _alert: AlertService,
+		private _form: FormService,
+		private _core: CoreService,
+		private _us: UserService
+	) {
 		for (const role of this._us.roles) {
 			this.columns.push(role);
 		}

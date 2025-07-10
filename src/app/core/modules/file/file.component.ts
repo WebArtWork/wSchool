@@ -1,4 +1,3 @@
-import { NgClass, NgStyle } from '@angular/common';
 import {
 	Component,
 	EventEmitter,
@@ -6,13 +5,12 @@ import {
 	OnChanges,
 	OnInit,
 	Output,
-	SimpleChanges,
-	inject
+	SimpleChanges
 } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { HttpService, ModalService } from 'wacom';
-import { FileCropperComponent } from './file-cropper/file-cropper.component';
 import { FileService } from './file.service';
+import { FileCropperComponent } from './file-cropper/file-cropper.component';
+import { environment } from 'src/environments/environment';
 
 /**
  * The FileComponent is responsible for handling file uploads, primarily images,
@@ -23,13 +21,9 @@ import { FileService } from './file.service';
 	selector: 'ngx-file',
 	templateUrl: './file.component.html',
 	styleUrls: ['./file.component.scss'],
-	imports: [NgClass, NgStyle]
+	standalone: false
 })
 export class FileComponent implements OnInit, OnChanges {
-	private _modal = inject(ModalService);
-	private _http = inject(HttpService);
-	private _fs = inject(FileService);
-
 	readonly url = environment.url;
 
 	/**
@@ -113,6 +107,12 @@ export class FileComponent implements OnInit, OnChanges {
 	get files(): string[] {
 		return this.value as string[];
 	}
+
+	constructor(
+		private _modal: ModalService,
+		private _http: HttpService,
+		private _fs: FileService
+	) {}
 
 	ngOnInit(): void {
 		if (!this.name && !this.multiple && this.value) {

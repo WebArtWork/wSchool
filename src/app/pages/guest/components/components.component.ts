@@ -1,26 +1,13 @@
-import { JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormService } from 'src/app/core/modules/form/form.service';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { ButtonComponent } from '../../../core/modules/button/button.component';
-import { FileComponent } from '../../../core/modules/file/file.component';
-import { FormComponent } from '../../../core/modules/form/form.component';
-import { InputComponent } from '../../../core/modules/input/input.component';
 
 @Component({
 	templateUrl: './components.component.html',
 	styleUrls: ['./components.component.scss'],
-	imports: [
-		InputComponent,
-		FormComponent,
-		ButtonComponent,
-		FileComponent,
-		JsonPipe
-	]
+	standalone: false
 })
 export class ComponentsComponent {
-	private _form = inject(FormService);
-
 	submition: Record<string, unknown> = {
 		emails: []
 	};
@@ -188,4 +175,6 @@ export class ComponentsComponent {
 			}
 		]
 	});
+
+	constructor(private _form: FormService) {}
 }

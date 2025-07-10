@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CoreModule } from 'src/app/core/core.module';
-
-import { RouterModule, Routes } from '@angular/router';
 import { CustomformsComponent } from './customforms.component';
+import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
 	{
 		path: '',
-		loadComponent: () =>
-			import('./customforms.component').then(
-				(m) => m.CustomformsComponent
-			)
+		component: CustomformsComponent
 	}
 ];
 
 @NgModule({
-	imports: [RouterModule.forChild(routes), CoreModule, CustomformsComponent],
+	imports: [RouterModule.forChild(routes), CoreModule],
+	declarations: [CustomformsComponent],
 	providers: []
 })
 export class CustomformsModule {}

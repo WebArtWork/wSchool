@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CoreService, CrudService, CrudDocument } from 'wacom';
 
@@ -29,16 +29,11 @@ export interface Customform extends CrudDocument {
 	providedIn: 'root'
 })
 export class CustomformService extends CrudService<Customform> {
-	private _core = inject(CoreService);
-
 	readonly appId = (environment as unknown as { appId: string }).appId;
 
 	customforms: Customform[] = [];
 
-	/** Inserted by Angular inject() migration for backwards compatibility */
-	constructor(...args: unknown[]);
-
-	constructor() {
+	constructor(private _core: CoreService) {
 		super({
 			name: 'form'
 		});

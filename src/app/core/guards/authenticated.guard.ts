@@ -1,9 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthenticatedGuard {
-	private router = inject(Router);
+	constructor(private router: Router) {}
 
 	canActivate(): boolean {
 		if (localStorage.getItem('waw_user')) {

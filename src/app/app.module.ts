@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
-import { Routes } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 // Core
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from 'src/app/core/core.module';
+import { AppComponent } from './app.component';
+import { GuestComponent } from './core/theme/guest/guest.component';
+import { PublicComponent } from './core/theme/public/public.component';
+import { UserComponent } from './core/theme/user/user.component';
 // config
-import { MetaGuard } from 'wacom';
+import { environment } from 'src/environments/environment';
+import { MetaGuard, WacomModule } from 'wacom';
 // guards
 import { AdminsGuard } from './core/guards/admins.guard';
 import { AuthenticatedGuard } from './core/guards/authenticated.guard';
@@ -18,10 +25,7 @@ const routes: Routes = [
 	{
 		path: '',
 		canActivate: [GuestGuard],
-		loadComponent: () =>
-			import('./core/theme/guest/guest.component').then(
-				(m) => m.GuestComponent
-			),
+		component: GuestComponent,
 		children: [
 			/* guest */
 			{
@@ -42,10 +46,7 @@ const routes: Routes = [
 	{
 		path: '',
 		canActivate: [AuthenticatedGuard],
-		loadComponent: () =>
-			import('./core/theme/user/user.component').then(
-				(m) => m.UserComponent
-			),
+		component: UserComponent,
 		children: [
 			/* user */
 			{
@@ -130,10 +131,7 @@ const routes: Routes = [
 	},
 	{
 		path: '',
-		loadComponent: () =>
-			import('./core/theme/public/public.component').then(
-				(m) => m.PublicComponent
-			),
+		component: PublicComponent,
 		children: [
 			/* user */
 			{
@@ -167,10 +165,7 @@ const routes: Routes = [
 	{
 		path: 'admin',
 		canActivate: [AdminsGuard],
-		loadComponent: () =>
-			import('./core/theme/user/user.component').then(
-				(m) => m.UserComponent
-			),
+		component: UserComponent,
 		children: [
 			/* admin */
 			{
@@ -221,5 +216,65 @@ const routes: Routes = [
 	}
 ];
 
-@NgModule()
+@NgModule({
+	declarations: [
+		AppComponent,
+		GuestComponent,
+		UserComponent,
+		PublicComponent
+	],
+	imports: [
+		CoreModule,
+		BrowserModule,
+		BrowserAnimationsModule,
+		WacomModule.forRoot({
+			store: {},
+			http: {
+				url: environment.url
+			},
+			socket: environment.production,
+			meta: {
+				useTitleSuffix: true,
+				defaults: {
+					title: environment.meta.title,
+					favicon: environment.meta.favicon,
+					description: environment.meta.description,
+					titleSuffix: ' | ' + environment.meta.title,
+					'og:image': environment.meta.image
+				}
+			},
+			modal: {
+				modals: {
+					/* modals */
+				}
+			},
+			alert: {
+				alerts: {
+					/* alerts */
+				}
+			},
+			loader: {
+				loaders: {
+					/* loaders */
+				}
+			},
+			popup: {
+				popups: {
+					/* popups */
+				}
+			}
+		}),
+		RouterModule.forRoot(routes, {
+			scrollPositionRestoration: 'enabled',
+			preloadingStrategy: PreloadAllModules
+		})
+	],
+	providers: [
+		/* providers */
+		AuthenticatedGuard,
+		GuestGuard,
+		AdminsGuard
+	],
+	bootstrap: [AppComponent]
+})
 export class AppModule {}
