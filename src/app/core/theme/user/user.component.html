@@ -111,6 +111,16 @@
 				<a
 					[routerLinkActiveOptions]="{ exact: true }"
 					routerLinkActive="_activeLink"
+					routerLink="/allcourses"
+					class="nav__burger-link"
+					(click)="hideSidebar()"
+				>
+					<span class="material-icons">grade</span>
+					<span translate>Theme.All Courses</span>
+				</a>
+				<a
+					[routerLinkActiveOptions]="{ exact: true }"
+					routerLinkActive="_activeLink"
 					routerLink="/lessons"
 					class="nav__burger-link"
 					(click)="hideSidebar()"

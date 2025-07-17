@@ -1,0 +1,152 @@
+@use 'src/scss/utils/mixins' as mixins;
+@use 'src/scss/utils/media' as media;
+@use 'src/scss/utils/vars' as vars;
+
+.all-courses {
+    width: auto;
+
+    .courses-header {
+        background-color: var(--c-bg-secondary);
+        margin: -20px -20px 20px -20px;
+        width: calc(100% + 40px);
+        padding: 20px 20px 10px 20px;
+        box-shadow: var(--card-box-shadow, 0 2px 0px rgba(0, 0, 0, 0.1));
+
+        .course-header-content {
+            display: flex;
+            flex-direction: column;
+
+            .course-header-title {
+                h3 {
+                    margin: 0;
+                }
+            }
+
+            .filters {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px 30px;
+
+                div {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 0.9rem;
+
+                    input {
+                        height: 32px;
+                        background-color: transparent;
+                        border: 1px solid var(--c-border);
+                        border-radius: vars.$b-radius;
+                        color: var(--c-text-secondary);
+                        font-size: calc(#{vars.$fs} - 2px);
+                        line-height: calc(#{vars.$fs} + 4px);
+                        transition: vars.$transition;
+                        width: 120px;
+                        display: block;
+                        letter-spacing: vars.$letter-spacing;
+                        padding: 10px;
+
+                        &::placeholder {
+                            color: var(--c-placeholder);
+                            transition: vars.$transition;
+                        }
+
+                        &:focus {
+                            transition: vars.$transition;
+                            border-color: var(--c-primary);
+                        }
+
+                        &:disabled {
+                            background-color: vars.$c-grey;
+                            border-color: vars.$c-grey;
+                            color: vars.$c-grey;
+                            cursor: default;
+                            opacity: 0.6;
+                        }
+
+                        &[type='checkbox'] {
+                            width: 15px;
+                            height: 15px;
+                            font-size: 0.9rem;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    .courses-list {
+
+        .course-card {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+
+            img {
+                max-width: 150px;
+                max-height: 150px;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                flex-shrink: 0;
+            }
+
+            >div {
+                flex: 1;
+
+                [header] {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+
+                    .course-title,
+                    .course-cost {
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                    }
+                }
+
+                .course-description {
+                    font-size: 1rem;
+                    margin-bottom: 6px;
+                }
+
+                .course-included,
+                .course-learning,
+                .course-requirements {
+                    margin-bottom: 6px;
+                    font-size: 0.85rem;
+                }
+
+                .course-d-s {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 5px;
+
+                    .course-duration {
+                        font-size: 0.85rem;
+                    }
+
+                    .course-status {
+                        font-weight: bold;
+                        font-size: 1rem;
+                    }
+
+                    .status-active {
+                        color: white;
+                    }
+
+                    .status-inactive {
+                        color: gray;
+                    }
+                }
+            }
+        }
+    }
+}

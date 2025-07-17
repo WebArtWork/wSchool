@@ -14,4 +14,5 @@ export interface Schoolcourse extends CrudDocument {
 	school: string;
 	duration: number;
 	cost: number;
+	status: string;
 }

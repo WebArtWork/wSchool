@@ -1,0 +1,98 @@
+<div class="all-courses">
+<div class="courses-header">
+		<div class="course-header-content">
+			<div class="course-header-title">
+				<h3>Filters</h3>
+			</div>
+			<div class="filters">
+				<div>
+					<p>Cost From:</p>
+					<input type="number" [(ngModel)]="filters.costFrom" />
+					<p>To:</p>
+					<input type="number" [(ngModel)]="filters.costTo" />
+				</div>
+				<div>
+					<p>Status:</p>
+					<input type="checkbox" [(ngModel)]="filters.status['Active']" /> Active
+					<input type="checkbox" [(ngModel)]="filters.status['Inactive']"/> Inactive
+				</div>
+				<div>
+					<p>Duration From:</p>
+					<input type="number" [(ngModel)]="filters.durationFrom" />
+					<p>To:</p>
+					<input type="number" [(ngModel)]="filters.durationTo" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div class="courses-list">
+	<wcard *ngFor="let course of filteredCourses()">
+		<div class="course-card">
+			<img [src]="course.thumb.startsWith('/') ? course.thumb : '/' + course.thumb" alt="Course Image" />
+			<div>
+				<div header>
+					<span class="course-title">{{ course.name }}</span>
+					<span class="course-cost">${{ course.cost }}</span>
+				</div>
+				<div class="course-description">{{ course.description }}</div>
+				<div class="course-included"><strong>Included:</strong> {{ course.included?.join(', ') }}</div>
+				<div class="course-learning"><strong>Learning:</strong> {{ course.learning?.join(', ') }}</div>
+				<div class="course-requirements"><strong>Requirements:</strong> {{ course.requirements?.join(', ') }}
+				</div>
+				<div class="course-d-s">
+					<div class="course-duration">{{ course.duration }} hours</div>
+					<div class="course-status"
+						[ngClass]="{'status-active': course.status === 'Active', 'status-inactive': course.status === 'Inactive'}">
+						{{ course.status }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</wcard>
+</div>
+</div>
+<!--<div class="documents-wrapper" [class.documents-wrapper--open]="isMenuOpen">
+	<div class="documents-container">
+		<div class="documents-list">
+			<div [class.documents-sidebar--open]="isMenuOpen" class="documents-sidebar">
+				<div class="documents-sidebar-content">
+
+				</div>
+			</div>
+			<div class="documents-main">
+				<div class="documents-main-content">
+					<div class="courses-list">
+						<wcard *ngFor="let course of courses">
+							<div class="course-card">
+								<img [src]="course.thumb.startsWith('/') ? course.thumb : '/' + course.thumb"
+									alt="Course Image" />
+								<div>
+									<div header>
+										<span class="course-title">{{ course.name }}</span>
+										<span class="course-cost">${{ course.cost }}</span>
+									</div>
+									<div class="course-description">{{ course.description }}</div>
+									<div class="course-included"><strong>Included:</strong> {{ course.included?.join(',
+										') }}</div>
+									<div class="course-learning"><strong>Learning:</strong> {{ course.learning?.join(',
+										') }}</div>
+									<div class="course-requirements"><strong>Requirements:</strong> {{
+										course.requirements?.join(', ') }}
+									</div>
+									<div class="course-d-s">
+										<div class="course-duration">{{ course.duration }} hours</div>
+										<div class="course-status"
+											[ngClass]="{'status-active': course.status === 'Active', 'status-inactive': course.status === 'Inactive'}">
+											{{ course.status }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</wcard>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>-->
