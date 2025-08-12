@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from 'src/app/core/core.module';
 import { CertificatesComponent } from './certificates.component';
-import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
 	{

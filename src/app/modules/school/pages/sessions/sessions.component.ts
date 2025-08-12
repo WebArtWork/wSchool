@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { AlertService, CoreService } from 'wacom';
-import { SchoolsessionService } from '../../services/schoolsession.service';
-import { Schoolsession } from '../../interfaces/schoolsession.interface';
-import { FormService } from 'src/app/core/modules/form/form.service';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
-import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { schoolsessionFormComponents } from '../../formcomponents/schoolsession.formcomponents';
 import { Router } from '@angular/router';
-import { UserService } from 'src/app/modules/user/services/user.service';
+import { FormService } from 'src/app/core/modules/form/form.service';
+import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { SchoolcourseService } from 'src/app/modules/schoolcourse/services/schoolcourse.service';
+import { UserService } from 'src/app/modules/user/services/user.service';
+import { AlertService, CoreService } from 'wacom';
+import { schoolsessionFormComponents } from '../../formcomponents/schoolsession.formcomponents';
+import { Schoolsession } from '../../interfaces/schoolsession.interface';
+import { SchoolsessionService } from '../../services/schoolsession.service';
 
 @Component({
 	templateUrl: './sessions.component.html',
@@ -51,7 +51,7 @@ export class SessionsComponent {
 							close();
 						}
 					});
-			  }
+				}
 			: null,
 		update: this.hasAccess
 			? (doc: Schoolsession): void => {
@@ -62,7 +62,7 @@ export class SessionsComponent {
 
 							this._schoolsessionService.update(doc);
 						});
-			  }
+				}
 			: null,
 		delete: this.hasAccess
 			? (doc: Schoolsession): void => {
@@ -82,7 +82,7 @@ export class SessionsComponent {
 							}
 						]
 					});
-			  }
+				}
 			: null,
 		buttons: [
 			this.hasAccess
@@ -95,7 +95,7 @@ export class SessionsComponent {
 								doc
 							);
 						}
-				  }
+					}
 				: null,
 			{
 				icon: 'card_membership',
@@ -109,14 +109,14 @@ export class SessionsComponent {
 						icon: 'playlist_add',
 						click: this._bulkManagement(),
 						class: 'playlist'
-				  }
+					}
 				: null,
 			this.hasAccess
 				? {
 						icon: 'edit_note',
 						click: this._bulkManagement(false),
 						class: 'edit'
-				  }
+					}
 				: null
 		]
 	};
@@ -206,9 +206,9 @@ export class SessionsComponent {
 		return this._us.role('admin')
 			? '/admin/'
 			: this._us.role('schoolowner')
-			? '/owner/'
-			: this._us.role('schoolteacher')
-			? '/teacher/'
-			: '/';
+				? '/owner/'
+				: this._us.role('schoolteacher')
+					? '/teacher/'
+					: '/';
 	}
 }

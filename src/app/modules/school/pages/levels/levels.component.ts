@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertService, CoreService } from 'wacom';
-import { SchoolknowledgeService } from '../../services/schoolknowledge.service';
-import { Schoolknowledge } from '../../interfaces/schoolknowledge.interface';
-import { FormService } from 'src/app/core/modules/form/form.service';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
-import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { schoolknowledgeFormComponents } from '../../formcomponents/schoolknowledge.formcomponents';
 import { ActivatedRoute } from '@angular/router';
+import { FormService } from 'src/app/core/modules/form/form.service';
+import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { UserService } from 'src/app/modules/user/services/user.service';
+import { AlertService, CoreService } from 'wacom';
+import { schoolknowledgeFormComponents } from '../../formcomponents/schoolknowledge.formcomponents';
+import { Schoolknowledge } from '../../interfaces/schoolknowledge.interface';
+import { SchoolknowledgeService } from '../../services/schoolknowledge.service';
 
 @Component({
 	templateUrl: './levels.component.html',
@@ -193,9 +193,9 @@ export class LevelsComponent implements OnInit {
 		return this._us.role('admin')
 			? '/admin/'
 			: this._us.role('schoolowner')
-			? '/owner/'
-			: this._us.role('schoolteacher')
-			? '/teacher/'
-			: '/';
+				? '/owner/'
+				: this._us.role('schoolteacher')
+					? '/teacher/'
+					: '/';
 	}
 }

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { AlertService, CoreService } from 'wacom';
-import { SchoolService } from '../../services/school.service';
-import { School } from '../../interfaces/school.interface';
 import { FormService } from 'src/app/core/modules/form/form.service';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { schoolFormComponents } from '../../formcomponents/school.formcomponents';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { UserService } from 'src/app/modules/user/services/user.service';
+import { AlertService, CoreService } from 'wacom';
+import { schoolFormComponents } from '../../formcomponents/school.formcomponents';
+import { School } from '../../interfaces/school.interface';
+import { SchoolService } from '../../services/school.service';
 
 @Component({
 	templateUrl: './schools.component.html',
@@ -32,7 +32,7 @@ export class SchoolsComponent {
 								close();
 							}
 						});
-				  }
+					}
 				: null,
 		update:
 			this._us.role('admin') || this._us.role('schoolowner')
@@ -44,7 +44,7 @@ export class SchoolsComponent {
 
 								this._schoolService.update(doc);
 							});
-				  }
+					}
 				: null,
 		delete:
 			this._us.role('admin') || this._us.role('schoolowner')
@@ -67,7 +67,7 @@ export class SchoolsComponent {
 								}
 							]
 						});
-				  }
+					}
 				: null,
 		buttons: [
 			{
@@ -107,14 +107,14 @@ export class SchoolsComponent {
 						icon: 'playlist_add',
 						click: this._bulkManagement(),
 						class: 'playlist'
-				  }
+					}
 				: null,
 			this._us.role('admin') || this._us.role('schoolowner')
 				? {
 						icon: 'edit_note',
 						click: this._bulkManagement(false),
 						class: 'edit'
-				  }
+					}
 				: null
 		]
 	};
@@ -183,9 +183,9 @@ export class SchoolsComponent {
 		return this._us.role('admin')
 			? '/admin/'
 			: this._us.role('schoolowner')
-			? '/owner/'
-			: this._us.role('schoolteacher')
-			? '/teacher/'
-			: '/';
+				? '/owner/'
+				: this._us.role('schoolteacher')
+					? '/teacher/'
+					: '/';
 	}
 }

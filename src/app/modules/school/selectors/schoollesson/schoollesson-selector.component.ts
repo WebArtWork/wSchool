@@ -1,20 +1,20 @@
 import {
-	SimpleChanges,
-	EventEmitter,
 	Component,
+	EventEmitter,
+	Input,
 	OnChanges,
 	Output,
-	Input,
+	SimpleChanges
 } from '@angular/core';
 import { SelectModule } from 'src/app/core/modules/select/select.module';
-import { SchoollessonService } from '../../services/schoollesson.service';
 import { Schoollesson } from '../../interfaces/schoollesson.interface';
+import { SchoollessonService } from '../../services/schoollesson.service';
 
 @Component({
 	selector: 'schoollesson-selector',
 	templateUrl: './schoollesson-selector.component.html',
 	styleUrls: ['./schoollesson-selector.component.scss'],
-	imports: [SelectModule],
+	imports: [SelectModule]
 })
 export class SchoollessonSelectorComponent implements OnChanges {
 	@Input() value: string;

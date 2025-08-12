@@ -50,6 +50,58 @@ const routes: Routes = [
 		children: [
 			/* user */
 			{
+				path: 'certificate',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Certificate'
+					}
+				},
+				loadChildren: () =>
+					import('./pages/user/certificate/certificate.module').then(
+						(m) => m.CertificateModule
+					)
+			},
+			{
+				path: 'allcertificates',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Certificates'
+					}
+				},
+				loadChildren: () =>
+					import(
+						'./pages/user/certificates/certificates.module'
+					).then((m) => m.CertificatesModule)
+			},
+			{
+				path: 'progress',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Progress'
+					}
+				},
+				loadChildren: () =>
+					import('./pages/user/progress/progress.module').then(
+						(m) => m.ProgressModule
+					)
+			},
+			{
+				path: 'course',
+				canActivate: [MetaGuard],
+				data: {
+					meta: {
+						title: 'Course'
+					}
+				},
+				loadChildren: () =>
+					import('./pages/user/course/course.module').then(
+						(m) => m.CourseModule
+					)
+			},
+			{
 				path: 'allcourses',
 				canActivate: [MetaGuard],
 				data: {
@@ -57,8 +109,11 @@ const routes: Routes = [
 						title: 'All Courses'
 					}
 				},
-				loadChildren: () => import('./pages/user/allcourses/allcourses.module').then(m => m.AllcoursesModule)
-			}, 
+				loadChildren: () =>
+					import('./pages/user/allcourses/allcourses.module').then(
+						(m) => m.AllcoursesModule
+					)
+			},
 			{
 				path: 'schools',
 				canActivate: [MetaGuard],

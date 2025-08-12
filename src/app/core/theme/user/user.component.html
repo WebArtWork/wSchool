@@ -111,16 +111,6 @@
 				<a
 					[routerLinkActiveOptions]="{ exact: true }"
 					routerLinkActive="_activeLink"
-					routerLink="/allcourses"
-					class="nav__burger-link"
-					(click)="hideSidebar()"
-				>
-					<span class="material-icons">grade</span>
-					<span translate>Theme.All Courses</span>
-				</a>
-				<a
-					[routerLinkActiveOptions]="{ exact: true }"
-					routerLinkActive="_activeLink"
 					routerLink="/lessons"
 					class="nav__burger-link"
 					(click)="hideSidebar()"
@@ -142,6 +132,27 @@
 					[routerLinkActiveOptions]="{ exact: true }"
 					routerLinkActive="_activeLink"
 					routerLink="/certificates"
+					class="nav__burger-link"
+					(click)="hideSidebar()"
+				>
+					<span class="material-icons">card_membership</span>
+					<span translate>Theme.Certificates</span>
+				</a>
+				<hr />
+				<a
+					[routerLinkActiveOptions]="{ exact: true }"
+					routerLinkActive="_activeLink"
+					routerLink="/allcourses"
+					class="nav__burger-link"
+					(click)="hideSidebar()"
+				>
+					<span class="material-icons">grade</span>
+					<span translate>Theme.Courses</span>
+				</a>
+				<a
+					[routerLinkActiveOptions]="{ exact: true }"
+					routerLinkActive="_activeLink"
+					routerLink="/allcertificates"
 					class="nav__burger-link"
 					(click)="hideSidebar()"
 				>

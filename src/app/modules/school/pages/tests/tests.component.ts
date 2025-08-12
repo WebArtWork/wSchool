@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { AlertService, CoreService, ModalService } from 'wacom';
-import { SchooltestService } from '../../services/schooltest.service';
-import { Schooltest } from '../../interfaces/schooltest.interface';
-import { FormService } from 'src/app/core/modules/form/form.service';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
-import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
-import { schooltestFormComponents } from '../../formcomponents/schooltest.formcomponents';
 import { Router } from '@angular/router';
-import { TestQuestionsComponent } from './test-questions/test-questions.component';
+import { FormService } from 'src/app/core/modules/form/form.service';
+import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { UserService } from 'src/app/modules/user/services/user.service';
+import { AlertService, CoreService, ModalService } from 'wacom';
+import { schooltestFormComponents } from '../../formcomponents/schooltest.formcomponents';
+import { Schooltest } from '../../interfaces/schooltest.interface';
+import { SchooltestService } from '../../services/schooltest.service';
+import { TestQuestionsComponent } from './test-questions/test-questions.component';
 
 @Component({
 	templateUrl: './tests.component.html',
@@ -54,7 +54,7 @@ export class TestsComponent {
 							close();
 						}
 					});
-			  }
+				}
 			: null,
 		update: this.hasAccess
 			? (doc: Schooltest): void => {
@@ -65,7 +65,7 @@ export class TestsComponent {
 
 							this._schooltestService.update(doc);
 						});
-			  }
+				}
 			: null,
 		delete: this.hasAccess
 			? (doc: Schooltest): void => {
@@ -85,7 +85,7 @@ export class TestsComponent {
 							}
 						]
 					});
-			  }
+				}
 			: null,
 		buttons: [
 			this.hasAccess
@@ -98,7 +98,7 @@ export class TestsComponent {
 								test
 							});
 						}
-				  }
+					}
 				: null,
 			this.hasAccess
 				? {
@@ -110,7 +110,7 @@ export class TestsComponent {
 								doc
 							);
 						}
-				  }
+					}
 				: null,
 			{
 				icon: 'card_membership',
@@ -124,14 +124,14 @@ export class TestsComponent {
 						icon: 'playlist_add',
 						click: this._bulkManagement(),
 						class: 'playlist'
-				  }
+					}
 				: null,
 			this.hasAccess
 				? {
 						icon: 'edit_note',
 						click: this._bulkManagement(false),
 						class: 'edit'
-				  }
+					}
 				: null
 		]
 	};
@@ -140,7 +140,7 @@ export class TestsComponent {
 		return this.moduleType
 			? this._schooltestService.byId[
 					this.moduleType as 'school' | 'course' | 'lesson'
-			  ][this.moduleId]
+				][this.moduleId]
 			: this._schooltestService.schooltests;
 	}
 
@@ -219,9 +219,9 @@ export class TestsComponent {
 		return this._us.role('admin')
 			? '/admin/'
 			: this._us.role('schoolowner')
-			? '/owner/'
-			: this._us.role('schoolteacher')
-			? '/teacher/'
-			: '/';
+				? '/owner/'
+				: this._us.role('schoolteacher')
+					? '/teacher/'
+					: '/';
 	}
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Schoolcourse } from '../interfaces/schoolcourse.interface';
 import { CrudService } from 'wacom';
+import { Schoolcourse } from '../interfaces/schoolcourse.interface';
 
 @Injectable({
 	providedIn: 'root'

@@ -1,14 +1,14 @@
 import {
-	SimpleChanges,
-	EventEmitter,
 	Component,
+	EventEmitter,
+	Input,
 	OnChanges,
 	Output,
-	Input
+	SimpleChanges
 } from '@angular/core';
 import { SelectModule } from 'src/app/core/modules/select/select.module';
-import { SchoolcertificateService } from '../../services/schoolcertificate.service';
 import { Schoolcertificate } from '../../interfaces/schoolcertificate.interface';
+import { SchoolcertificateService } from '../../services/schoolcertificate.service';
 
 @Component({
 	selector: 'schoolcertificate-selector',

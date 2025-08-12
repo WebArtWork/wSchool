@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Schoollesson } from '../interfaces/schoollesson.interface';
 import { CrudService } from 'wacom';
+import { Schoollesson } from '../interfaces/schoollesson.interface';
 
 @Injectable({
-	providedIn: 'root',
+	providedIn: 'root'
 })
 export class SchoollessonService extends CrudService<Schoollesson> {
 	schoollessons: Schoollesson[] = this.getDocs();
@@ -12,7 +12,7 @@ export class SchoollessonService extends CrudService<Schoollesson> {
 
 	constructor() {
 		super({
-			name: 'schoollesson',
+			name: 'schoollesson'
 		});
 
 		this.get();

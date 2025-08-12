@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SchoollessonService } from '../../services/schoollesson.service';
-import { Schoollesson } from '../../interfaces/schoollesson.interface';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormService } from 'src/app/core/modules/form/form.service';
-import { TranslateService } from 'src/app/core/modules/translate/translate.service';
-import { schoollessonFormComponents } from '../../formcomponents/schoollesson.formcomponents';
 import { FormInterface } from 'src/app/core/modules/form/interfaces/form.interface';
 import { TableModule } from 'src/app/core/modules/table/table.module';
-import { CrudComponent } from 'wacom';
-import { Router } from '@angular/router';
+import { TranslateService } from 'src/app/core/modules/translate/translate.service';
 import { UserService } from 'src/app/modules/user/services/user.service';
+import { CrudComponent } from 'wacom';
+import { schoollessonFormComponents } from '../../formcomponents/schoollesson.formcomponents';
+import { Schoollesson } from '../../interfaces/schoollesson.interface';
+import { SchoollessonService } from '../../services/schoollesson.service';
 
 @Component({
 	imports: [CommonModule, TableModule],
@@ -82,9 +82,9 @@ export class LessonsComponent extends CrudComponent<
 		return this._userService.role('admin')
 			? '/admin/'
 			: this._userService.role('schoolowner')
-			? '/owner/'
-			: this._userService.role('schoolteacher')
-			? '/teacher/'
-			: '/';
+				? '/owner/'
+				: this._userService.role('schoolteacher')
+					? '/teacher/'
+					: '/';
 	}
 }

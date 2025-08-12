@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SchooltestService } from '../../../services/schooltest.service';
 import { FormService } from 'src/app/core/modules/form/form.service';
+import { CoreService, HttpService } from 'wacom';
 import {
 	Schooltest,
 	Schooltestquestion
 } from '../../../interfaces/schooltest.interface';
-import { CoreService, HttpService } from 'wacom';
 
 @Component({
 	selector: 'app-test-questions',
